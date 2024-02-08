@@ -1,0 +1,425 @@
+body {
+    padding: 0%;
+    margin: 0%;
+    background-color: #131313;
+}
+
+.header {
+    height: 15vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #131313;
+}
+
+.navBar {
+    display: flex;
+    justify-content: space-around;
+    width: 55%;
+}
+
+.CompanyLogo {
+    color: rgb(199, 199, 199);
+    margin-left: 1%;
+}
+
+.navLink {
+    text-decoration: none;
+    color: rgb(199, 199, 199);
+    font-size: 2.6vw;
+}
+
+.formHolder {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(#d3d3d3, #000);
+}
+
+.loginForm {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 2vw;
+    height: 70vh;
+    width: 60vh;
+    align-items: center;
+    cursor: pointer;
+    border: solid 1px white;
+}
+
+.signUpForm {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 2vw;
+    margin: 5vw 2vw 2vw 2vw;
+    height: 85vh;
+    width: 60vh;
+    border: solid #fff 1px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.inputForms {
+    margin: 1vw 4vw 1vw 4vw;
+    height: 2.5vw;
+    font-size: 2vw;
+    border: none;
+    border-bottom: solid 1px #131313;
+    background: none;
+}
+
+.inputForms:focus {
+    outline: none;
+    background-color: transparent;
+}
+
+.inputForms:active {
+    background-color: transparent;
+}
+
+.LoginTitle {
+    text-align: center;
+    color: white;
+    margin: 5vh 2vh 6vh 2vh;
+}
+
+.inputLabel {
+    color: #2D3142;
+    width: 80%;
+}
+
+.submitBtn {
+    margin: 5vh 5vh 5vh 5vh;
+    border: none;
+    background: none;
+    color: rgb(199, 199, 199);
+    width: 40%;
+    height: 5vw;
+    border-radius: 2vw;
+    font-size: 2vw;
+    border: solid white 1px;
+}
+
+.logText {
+    font-size: 1.6vw;
+}
+
+.loginText {
+    color: rgb(199, 199, 199);
+    text-decoration: none;
+}
+
+#accountSettings {
+    background: linear-gradient(#131313, #888888);
+}
+
+.accountInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accountTitle {
+    margin-top: 5vw;
+    color: rgb(199, 199, 199);
+}
+
+.accountDisplay {
+    text-align: center;
+    color: rgb(199, 199, 199);
+}
+
+.accountBtns {
+    text-align: center;
+    border: solid #fff 1px;
+    border-radius: 2vw;
+    color: white;
+    font-weight: 100;
+    padding: 1.4vw .7vw 1.4vw .7vw;
+    font-size: 2.6vw;
+    cursor: pointer;
+}
+
+.accountInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+#LogOutBtn {
+    font-size: 2.6vw;
+    margin-top: 10vw;
+    border: solid 1px #131313;
+    border-radius: 2vw;
+    padding: 1vw 2vw;
+    color: #131313;
+    cursor: pointer;
+}
+
+#DeleteAccBtn {
+    font-size: 2.6vw;
+    border: solid 1px #131313;
+    border-radius: 2vw;
+    padding: 1vw 2vw;
+    color: #131313;
+    background-color: #b86363;
+    cursor: pointer;
+}
+
+
+.NCholder {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #d3d3d3;
+    background: linear-gradient(#131313, #888888);
+    flex-direction: column;
+    margin-top: 10vh;
+}
+
+.NCTitle {
+    font-size: 2.6vw;
+}
+
+.NCForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 50vh;
+}
+
+#usernameInput {
+    background: none;
+    border: none;
+    border-bottom: solid 1px #d3d3d3;
+    box-shadow: none;
+    font-size: 2vw;
+    margin-top: 5vh;
+}
+
+#usernameInput:focus {
+    outline: none;
+}
+
+.contactRequests {
+    width: 80%;
+    margin-bottom: 10vh;
+}
+
+.request {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.requestBtns {
+    display: flex;
+    width: 20%;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    color: #131313;
+}
+
+.acceptRequest {
+    font-size: 4vw;
+    background-color: lightgreen;
+    width: 5vw;
+    height: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    cursor: pointer;
+
+}
+
+.declineRequest {
+    font-size: 4vw;
+    background-color: red;
+    width: 5vw;
+    height: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    cursor: pointer;
+
+}
+
+.requestTitle {
+    width: 100%;
+    text-align: center;
+}
+
+.ContactsHolder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.contactDiv {
+    width: 15%;
+    color: #d3d3d3;
+    min-height: 85vh;
+    background-color: #2D3142;
+}
+
+.Contact {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #2D3142;
+    overflow-y: scroll;
+}
+
+.contactDiv ::-webkit-scrollbar {
+    width: 0%;
+    display: none;
+}
+
+.contactTitle {
+    text-align: center;
+    font-size: 2vw;
+    height: 5vh;
+    padding: 2vw 0vw 2vw 0vw;
+    width: 100%;
+    margin: 0%;
+    cursor: pointer;
+}
+
+.messageHolder {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    height: 85vh;
+    justify-content: end;
+}
+
+.message {
+    margin: .5vw 2vw .5vw 2vw;
+    border: solid white 1px;
+    padding: 0vw 1vw 0vw 1vw;
+}
+
+.messageSender {
+    font-size: 2vw;
+    color: #b86363;
+}
+
+.messageText {
+    font-size: 2vw;
+    margin-left: 2vw;
+    color: #888888;
+}
+
+.TextMessage {
+    display: flex;
+    justify-content: row;
+    height: 5vw;
+    align-items: center;
+    margin-top: 2vw;
+    margin-bottom: 1vw;
+}
+
+#personalMessage {
+    background-color: #212227;
+    color: #888888;
+    height: 5vw;
+    width: 90%;
+    margin: .5vw 1vw .5vw 2vw;
+}
+
+#sendIcon {
+    color: #fff;
+    cursor: pointer;
+}
+
+#userBio {
+    background: #2D3142;
+    border: none;
+    border-radius: 1vw;
+    color: white;
+    padding: 1vw;
+}
+
+#submitBio {
+    margin-top: 5vw;
+    padding: 1vw 1.5vw 1vw 1.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container{
+    margin-top: 2vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+#checked{
+    width: 5vw;
+    height: 5vw;
+    margin-top: 2vw;
+}
+.accountUnderText{
+    color: #888888;
+    font-size: 1.5vw;
+}
+#discoverBtn{
+    text-align: center;
+    border: solid #fff 1px;
+    border-radius: 2vw;
+    color: white;
+    font-weight: 100;
+    padding: 1.4vw .7vw 1.4vw .7vw;
+    font-size: 2.6vw;
+    cursor: pointer;
+}
+.discoverHolder{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 5vw;
+    flex-wrap: wrap;
+}
+.discoveredUser{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 5vw;
+    width: 80%;
+    background-color: #2D3142;
+    padding: 2vw;
+    border-radius: 2vw;
+}
+.headerHolder{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.discoverAdd{
+    border: solid white 1px;
+    padding: 0vw 1.3vw 0vw 1.3vw;
+    border-radius: 2vw;
+    font-size: 2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    cursor: pointer;
+}
+.discoverTitle{
+    font-size: 2.3vw;
+}
+.discoverName{
+    font-size: 4vw;
+}
