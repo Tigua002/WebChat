@@ -8,7 +8,7 @@ form.addEventListener('submit', handleForm);
 
 async function addContact(paramUser) {
     let requestedUser = paramUser || document.getElementById("usernameInput").value
-    if (requestedUser == sessionStorage.getItem("username")) {
+    if (requestedUser.toUpperCase() == sessionStorage.getItem("username").toUpperCase()) {
         alert("Can't send a request to yourself sorry")
         return
     } else if (requestedUser == "DELETED USER") {
@@ -31,12 +31,12 @@ async function addContact(paramUser) {
     }
     // sets user and password the user inputs
     const data = {
-        user: sessionStorage.getItem("username"),
-        requestedUser: requestedUser,
-        senderID: sessionStorage.getItem("userID")
+        user: requestedUser,
+        senderID: sessionStorage.getItem("userID"),
+        senderName: sessionStorage.getItem("username")
     }
     // sends the data to the database
-    fetch("/create/request", {
+    fetch("/create/request/", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ async function addContact(paramUser) {
 
 async function loadRequests() {
     // requests the database for all info about the users    
-    const responce = await fetch("get/requests/" + sessionStorage.getItem("username"),
+    const responce = await fetch("get/requests/" + sessionStorage.getItem("userID"),
         {
             method: "GET"
         })
@@ -74,12 +74,11 @@ async function loadRequests() {
         holder.appendChild(BtnDiv)
         BtnDiv.appendChild(accBtn)
         BtnDiv.appendChild(decBtn)
-
-        title.innerHTML = requests[i].sender
+        title.innerHTML = requests[i].senderUsername
         accBtn.innerHTML = "&#10003;"
         decBtn.innerHTML = "&#88;"
-
-        accBtn.setAttribute("onClick", "acceptReq('" + requests[i].sender + "')")
+        
+        accBtn.setAttribute("onClick", `acceptReq('${requests[i].sender}', '${requests[i].senderUsername}')`)
         decBtn.setAttribute("onClick", "declineReq('" + requests[i].sender + "')")
 
 
@@ -89,7 +88,7 @@ async function loadRequests() {
 async function declineReq(sender) {
     // sets user and password the user inputs
     const data = {
-        user: sessionStorage.getItem("username"),
+        userID: sessionStorage.getItem("userID"),
         sender: sender
     }
     // sends the data to the database
@@ -101,14 +100,16 @@ async function declineReq(sender) {
         body: JSON.stringify(data)
     })
     alert("success")
+    window.location.reload()
 }
 
-async function acceptReq(sender,) {
+async function acceptReq(sender, senderUsername) {
     // sets user and password the user inputs
     const data = {
         user: sessionStorage.getItem("username"),
         sender: sender,
-
+        userID: sessionStorage.getItem("userID"),
+        senderName: senderUsername
     }
     // sends the data to the database
     fetch("/accept/request", {
@@ -125,6 +126,7 @@ async function acceptReq(sender,) {
             element[i].parentElement.remove()
         }
     }
+    window.location.reload()
 }
 
 async function loadDiscoveries() {
@@ -135,9 +137,9 @@ async function loadDiscoveries() {
         })
     // sets user as the value we recieve from the database    
     const user = await responce.json()
-    let username = sessionStorage.getItem("username")
+    let userID = sessionStorage.getItem("userID")
     // requests the database for all info about the users    
-    const res = await fetch("/contacts/user/" + username,
+    const res = await fetch("/get/friends/" + userID,
         {
             method: "GET"
         })
@@ -171,10 +173,14 @@ async function loadDiscoveries() {
         div.appendChild(description)
 
         element.appendChild(div)
+        console.log(contacts);
         for (let x = 0; x < contacts.length; x++) {
-            if (user[i].username == contacts[x].accepter || user[i].username == contacts[x].initiator || user[i].username == sessionStorage.getItem("username")) {
+            if (user[i].clientID == contacts[x].recieverID || user[i].clientID == contacts[x].senderID ) {
                 div.remove()
-            }            
+            }      
+        }
+        if (user[i].clientID == sessionStorage.getItem("userID")){
+            div.remove()
         }
     }
 }

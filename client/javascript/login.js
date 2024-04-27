@@ -25,10 +25,12 @@ async function login() {
             method: "GET"
         })
     // sets user as the value we recieve from the database
+
     const user = await responce.json()
+    console.log(user);
     if (user.length == 1) {
         sessionStorage.setItem("username", user[0].username)
-        sessionStorage.setItem("userID", user[0].userID)
+        sessionStorage.setItem("userID", user[0].clientID)
     } else if (user.length == 0) {
         alert("Hhmm, Something is wrong")
         return

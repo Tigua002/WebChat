@@ -3,7 +3,10 @@ body {
     margin: 0%;
     background-color: #131313;
 }
-
+#preventOverflow{
+    overflow-y: hidden;
+    /* height: 200vh; */
+}
 .header {
     height: 15vh;
     display: flex;
@@ -261,37 +264,54 @@ body {
     height: 100%;
     display: flex;
     flex-direction: row;
-
 }
 
 .contactDiv {
-    width: 15%;
+    width: 25%;
     color: #d3d3d3;
-    min-height: 85vh;
     background-color: #2D3142;
+    padding-bottom: 10vh;
+    overflow-y: scroll;
+    position: relative;
+    max-height: 75vh;
 }
 
 .Contact {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     background-color: #2D3142;
-    overflow-y: scroll;
 }
 
-.contactDiv ::-webkit-scrollbar {
+.contactDiv::-webkit-scrollbar {
     width: 0%;
     display: none;
 }
 
 .contactTitle {
     text-align: center;
-    font-size: 2vw;
-    height: 5vh;
+    font-size: 1.4vw;
+    height: auto;
     padding: 2vw 0vw 2vw 0vw;
     width: 100%;
     margin: 0%;
     cursor: pointer;
+    background: none;
+    color: white;
+    border: none;
+    white-space: normal;
+    padding: 1.4em .4em;
+}
+.contactTitle:focus{
+    border: none;
+    outline: none   ;
+}
+#downArrow{
+    position: fixed;
+    bottom: 0%;
+    left: 6%;
+    opacity: .5;
+    display: none;
 }
 
 .messageHolder {
@@ -340,6 +360,9 @@ body {
 #sendIcon {
     color: #fff;
     cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 4vw;
 }
 
 #userBio {
@@ -357,23 +380,58 @@ body {
     justify-content: center;
     align-items: center;
 }
-.container{
+
+.container {
     margin-top: 2vw;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
-#checked{
-    width: 5vw;
-    height: 5vw;
-    margin-top: 2vw;
+
+#checked {
+    opacity: 0;
+    position: absolute;
 }
-.accountUnderText{
+#checked + label{
+    display: flex;
+    position: relative;
+    align-items: center;
+    cursor: pointer;
+}
+#checked + label::before{
+    content: "";
+    width: 6em;
+    height: 3em;
+    background-color: rgb(89, 89, 89);
+    background-color: rgb(70, 70, 70);
+    border-radius: 3em;
+    transition: 200ms ease-in-out;
+}
+#checked + label::after{
+    position: absolute;
+    left: .3em;
+    content: "";
+    width: 2.7em;
+    height: 2.7em;
+    background-color: rgb(45, 45, 45);
+    border-radius: 3em;
+    transition: 200ms ease-in-out;
+}
+#checked:checked + label::after{
+    transform: translateX(100%);
+    background-color: rgb(80, 80, 80);
+}
+#checked:checked + label::before{
+    background-color: rgb(89, 89, 89);
+}
+
+.accountUnderText {
     color: #888888;
     font-size: 1.5vw;
 }
-#discoverBtn{
+
+#discoverBtn {
     text-align: center;
     border: solid #fff 1px;
     border-radius: 2vw;
@@ -383,7 +441,8 @@ body {
     font-size: 2.6vw;
     cursor: pointer;
 }
-.discoverHolder{
+
+.discoverHolder {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -392,7 +451,8 @@ body {
     margin-top: 5vw;
     flex-wrap: wrap;
 }
-.discoveredUser{
+
+.discoveredUser {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -402,24 +462,101 @@ body {
     padding: 2vw;
     border-radius: 2vw;
 }
-.headerHolder{
+
+.headerHolder {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
-.discoverAdd{
+
+.discoverAdd {
     border: solid white 1px;
     padding: 0vw 1.3vw 0vw 1.3vw;
     border-radius: 2vw;
     font-size: 2vw;
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     cursor: pointer;
 }
-.discoverTitle{
+
+.discoverTitle {
     font-size: 2.3vw;
 }
-.discoverName{
+
+.discoverName {
     font-size: 4vw;
 }
+
+/* Style for the custom context menu */
+.customMenu {
+    position: absolute;
+    background-color: #212227;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    display: none;
+    color: #888888;
+}
+.customMenuItem {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+#friendMenu{
+    position: fixed;
+    background-color: #212227;
+    top: 0%;
+    display: none;
+    flex-direction: column;
+    color: #888888;
+    font-size: 1vw;
+    max-height: 40vh;
+    overflow-y: scroll;
+}
+#friendMenu::-webkit-scrollbar{
+    display: none;
+}
+.friend {
+    position: relative;
+    display: flex;
+    width: 15vw;
+    padding: 1vw;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
+    font-size: .8vw;
+    cursor: pointer;
+    user-select: none;
+}
+
+.friendName{
+    margin: 0%;
+}
+.usercheck {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.custom-checkbox {
+    display: flex;
+    width: 2vw;
+    height: 2vw;
+    background-color: #2D3142;
+    border: none;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2vw;
+    opacity: .3;
+    border: solid white 1px;
+    user-select: none;
+    color: #fff;
+}
+
+/* Corrected selector to style the custom checkbox when the actual checkbox is checked */
+.usercheck:checked + .customCheckboxStyle .custom-checkbox {
+    background-color: red; /* Adjusted style for the checked state */
+    opacity: 1;
+}
+
+

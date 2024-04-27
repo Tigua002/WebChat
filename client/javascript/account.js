@@ -7,8 +7,9 @@ async function LoadUser() {
         })
     // assinging the variable users to the database responce
     const users = await res.json()
+    console.log(sessionStorage);
     for (let i = 0; i < users.length; i++) {
-        if (users[i].username == sessionStorage.getItem("username") && users[i].userID == sessionStorage.getItem("userID")) {
+        if (users[i].username == sessionStorage.getItem("username") && users[i].clientID == sessionStorage.getItem("userID")) {
             document.getElementById("username").innerHTML = sessionStorage.getItem("username")
             document.getElementById("userBio").value = users[i].BIO
             if (users[i].status == "discoverable") {

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body id="preventOverflow">
     <div class="header">
         <h1 class="CompanyLogo">Webchat</h1>
         <div class="navBar">
@@ -28,15 +28,16 @@
     </div>
     <div class="ContactsHolder">
         <div class="contactDiv">
+            <h1 id="downArrow">&#x2193</h1>
             <!-- <div class="Contact">
                 <h1 class="contactTitle">Timur</h1>
             </div> -->
         </div>
         <div class="messageHolder">
-            <div class="TextMessage">
+            <form class="TextMessage">
                 <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
-                <h1 id="sendIcon">&#8674;</h1>
-            </div>
+                <input id="sendIcon" type="submit" value="&#8674;">
+            </form>
             <div class="messages">
                 <!-- <div class="message">
                     <h1 class="messageSender">Timur:</h1>
@@ -47,8 +48,22 @@
         </div>
     </div>
 
+    <div id="customContextMenu" class="customMenu" style="display: none;">
+        <div class="customMenuItem" id="addUserMenu">ADD USER</div>
+        <div class="customMenuItem" id="menuItem1">RENAME</div>
+    </div>
+    <div class="friendsMenu" id="friendMenu" anchor="customContextMenu">
+        <!-- <div class="friend">
+            <h1 class="friendName id="#">Timur</h1>
+            <label class="custom-checkbox"></label>
+        </div> -->
+        <h1 class="submitAddGroup">SUBMIT</h1>
+    </div>
+
 
 </body>
-<script src="javascript/Contacts.js"></script>
+<script src="javascript/Contacts.js">
+
+</script>
 
 </html>

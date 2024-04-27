@@ -6,13 +6,13 @@ const md5 = require('md5')
 // definerer porten jeg skal bruke
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server is running on this port: ${PORT}`));
-const mysql = require('mysql');
+const mysql = require('mysql2');
 // test databasen
 const connection = mysql.createConnection({
     host: '127.0.0.1',
-    user: 'server',
-    password: 'serverpass',
-    database: 'WebChat'
+    user: 'root',
+    password: 'admin',
+    database: 'webprot'
 });
 
 // connecter til databasen
@@ -33,25 +33,19 @@ app.post("/create/user/", function (req, res) {
     let hiddenPass = md5(passord)
     // legger til brukeren i users "table"
     connection.query(`INSERT INTO clients (username, password) VALUES ("${user}", "${hiddenPass}")`)
-
-
-    connection.query(`CREATE TABLE ${user}Connections (initiator VARCHAR(100), accepter VARCHAR(100), initiatorID INT, accepterID INT)`)
-
-
-
 })
 
 
-app.post("/change/user/", function (req, res) {
-    // skaffer user og passord fra data-en og gir dem en verdi
-    let oldUser = req.body.oldUser
-    let newUser = req.body.newUsername
-    let password = req.body.pass
-    let hiddenPass = md5(password)
-    // legger til brukeren i users "table"
-    connection.query(`UPDATE clients set username = "${newUser}" WHERE username = "${oldUser}" AND password = "${hiddenPass}"`)
-    connection.query(`ALTER TABLE ${oldUser}connections RENAME TO ${newUser}connections`)
-})
+// app.post("/change/user/", function (req, res) {
+//     // skaffer user og passord fra data-en og gir dem en verdi
+//     let oldUser = req.body.oldUser
+//     let newUser = req.body.newUsername
+//     let password = req.body.pass
+//     let hiddenPass = md5(password)
+//     // legger til brukeren i users "table"
+//     connection.query(`UPDATE clients set username = "${newUser}" WHERE username = "${oldUser}" AND password = "${hiddenPass}"`)
+//     connection.query(`ALTER TABLE ${oldUser}connections RENAME TO ${newUser}connections`)
+// })
 app.post("/change/password/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let user = req.body.user
@@ -62,21 +56,25 @@ app.post("/change/password/", function (req, res) {
     // legger til brukeren i users "table"
     connection.query(`UPDATE clients set password = "${newHiddenPass}" WHERE username = "${user}" AND password = "${hiddenPass}"`)
 })
-app.post("/delete/user/", function (req, res) {
-    // skaffer user og passord fra data-en og gir dem en verdi
-    let oldUser = req.body.oldUser
-    let password = req.body.pass
-    let hiddenPass = md5(password)
-    // legger til brukeren i users "table"
-    connection.query(`UPDATE clients set username = "DELETED USER", status = "DELETED" WHERE username = "${oldUser}" AND password = "${hiddenPass}"`)
-})
+// app.post("/delete/user/", function (req, res) {
+//     // skaffer user og passord fra data-en og gir dem en verdi
+//     let oldUser = req.body.oldUser
+//     let password = req.body.pass
+//     let hiddenPass = md5(password)
+//     // legger til brukeren i users "table"
+//     connection.query(`UPDATE clients set username = "DELETED USER", status = "DELETED" WHERE username = "${oldUser}" AND password = "${hiddenPass}"`)
+// })
 app.post("/create/request/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let user = req.body.user
-    let ReqUser = req.body.requestedUser
     let senderID = req.body.senderID
+    let senderName = req.body.senderName
     // legger til brukeren i users "table"
-    connection.query(`INSERT INTO requests (sender, reciever, senderID) VALUES ("${user}", "${ReqUser}", ${senderID})`)
+    connection.query(`SELECT * FROM clients WHERE username="${user}"`, (err, result, fields) => {
+        let data = JSON.parse(JSON.stringify(result))
+        connection.query(`INSERT INTO requests (sender, reciever, senderUsername) VALUES ("${senderID}", "${data[0].clientID}", "${senderName}")`)
+
+    })
 })
 
 app.post("/save/bio/", function (req, res) {
@@ -89,31 +87,87 @@ app.post("/save/bio/", function (req, res) {
 })
 app.post("/decline/request/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
-    let user = req.body.user
+    let userID = req.body.userID
     let sender = req.body.sender
     // legger til brukeren i users "table"
-    connection.query(`DELETE FROM requests WHERE reciever = "${user}" AND sender = "${sender}"`)
+    connection.query(`DELETE FROM requests WHERE reciever = "${userID}" AND sender = "${sender}"`)
+
 })
 app.post("/accept/request/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
+    let userID = req.body.userID
     let user = req.body.user
     let sender = req.body.sender
-
-    // legger til brukeren i users "table"
-    connection.query(`DELETE FROM requests WHERE reciever = "${user}" AND sender = "${sender}"`)
-    connection.query(`CREATE TABLE ${sender}TO${user} (message LONGTEXT, messageID INT auto_increment PRIMARY KEY, sender VARCHAR(50))`)
-    connection.query(`INSERT INTO ${user}Connections (initiator, accepter) VALUES ("${sender}", "${user}")`)
-    connection.query(`INSERT INTO ${sender}Connections (initiator, accepter) VALUES ("${sender}", "${user}")`)
+    let senderName = req.body.senderName
+    console.log(req.body);
+    connection.query(`INSERT INTO friends (senderID, recieverID, senderName, recieverName) VALUES (${sender}, ${userID}, '${senderName}', '${user}')`)
+    connection.query(`DELETE FROM requests WHERE reciever = "${userID}" AND sender = "${sender}"`)
+    connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
+        let data = JSON.parse(JSON.stringify(result))
+        connection.query(`INSERT INTO lobbies (lobbyID, lobbyName) VALUES (${data.length + 1}, "${user}TO${senderName}")`)
+        connection.query(`INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (${data.length + 1}, ${userID},' ${user}', "${user}TO${senderName}")`)
+        connection.query(`INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (${data.length + 1}, ${sender}, '${senderName}', "${user}TO${senderName}")`)
+    })
 })
 app.post("/send/message/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
-    let initiator = req.body.init
-    let accepter = req.body.acce
-    let sender = req.body.sender
+    let lobbyID = req.body.lobbyID
     let message = req.body.message
+    let sender = req.body.sender
     // legger til brukeren i users "table"
-    connection.query(`INSERT INTO ${initiator}TO${accepter} (message, sender) VALUES ("${message}", "${sender}")`)
+    connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES (${lobbyID}, '${message}', '${sender}')`)
 })
+app.post("/rename/lobby/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let lobbyID = req.body.lobbyID
+    let lobbyName = req.body.lobbyName
+
+    // legger til brukeren i users "table"
+
+    connection.query(`UPDATE lobbies SET lobbyName = '${lobbyName}' WHERE lobbyID = ${lobbyID}`)
+    connection.query(`UPDATE connections SET lobbyName = '${lobbyName}' WHERE lobbyID = ${lobbyID}`)
+})
+app.post("/create/Group/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let allUsers = JSON.parse(req.body.users)
+    let hostID = req.body.hostID
+    let hostName = req.body.hostName
+    let query = ``
+
+
+    let dataLength;
+
+
+    connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
+        let data = JSON.parse(JSON.stringify(result))
+        dataLength = data.length + 1
+        connection.query(`INSERT INTO lobbies (lobbyID, lobbyName) VALUES (${dataLength}, "groupchat")`)
+        for (let i = 0; i < allUsers.length; i++) {
+            let user = allUsers[i]
+            query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName) VALUES (${user.id}, ${dataLength}, '${user.name}', "groupchat") `
+            connection.query(query, function (err, result) {
+                if (err) {
+                    console.error("Error executing query:", err);
+                    res.status(500).send("Error executing query");
+                    return;
+                }
+            })
+
+        }
+        query = `INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (${dataLength}, ${hostID}, '${hostName}', "groupchat")`
+        connection.query(query, function (err, result) {
+            if (err) {
+                console.error("Error executing query:", err);
+                res.status(500).send("Error executing query");
+                return;
+            }
+        })
+        console.log(query);
+
+    })
+    console.log(allUsers);
+})
+
 app.get("/users", function (req, res) {
     connection.query(`SELECT * FROM clients`, function (err, result, fields) {
         let data = JSON.parse(JSON.stringify(result))
@@ -144,26 +198,40 @@ app.get('/find/user/:a', (req, res) => {
     })
 });
 app.get('/contacts/user/:a', (req, res) => {
-    connection.query(`SELECT * FROM ${req.params.a}connections`, function (err, result, fields) {
+    connection.query(`SELECT * FROM connections WHERE clientID = "${req.params.a}";`, function (err, result, fields) {
         let data = JSON.parse(JSON.stringify(result))
         res.send(data)
     })
 });
 
 
-
-
-app.get('/cont/message/:a/:b', (req, res) => {
-    connection.query(`SELECT * FROM ${req.params.a}To${req.params.b} `, function (err, result, fields) {
+app.get('/cont/message/:a', (req, res) => {
+    connection.query(`SELECT * FROM messages WHERE lobbyID = ${req.params.a}`, function (err, result, fields) {
         let data = JSON.parse(JSON.stringify(result))
         res.send(data)
     })
 });
 
 app.get('/get/requests/:a', (req, res) => {
-    connection.query(`SELECT * FROM requests WHERE reciever = "${req.params.a}" `, function (err, result, fields) {
+    connection.query(`SELECT * FROM requests WHERE reciever="${req.params.a}" `, function (err, result, fields) {
         let data = JSON.parse(JSON.stringify(result))
         res.send(data)
     })
 });
+app.get('/get/friends/:a', (req, res) => {
+    let query = `SELECT * FROM friends WHERE senderID="${req.params.a}" OR recieverID = "${req.params.a}" `
+    connection.query(query, function (err, result, fields) {
+        let data = JSON.parse(JSON.stringify(result))
+        res.send(data)
+    })
+});
+app.get('/get/lobbyMembers/:a', (req, res) => {
+    let query = `SELECT * FROM connections WHERE lobbyID="${req.params.a}"`
+    connection.query(query, function (err, result, fields) {
+        let data = JSON.parse(JSON.stringify(result))
+        res.send(data)
+    })
+});
+
+
 app.use(express.static("client"))
