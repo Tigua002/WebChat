@@ -40,7 +40,7 @@ async function changeUser() {
         alert("You are using invalid characters in your username!")
         return
     }
-    if (newUser.includes("DELETED USER")) {
+    if (newUser.includes("DELETED USER") || newUser.includes("STATUS")) {
         alert("don't use reserved keywords")
         return
     }

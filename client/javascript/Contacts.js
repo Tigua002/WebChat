@@ -72,6 +72,9 @@ async function loadContacts() {
             if (document.getElementById("deleteGroup")) {
                 document.getElementById("deleteGroup").remove()
             }
+            if (document.getElementById("leaveChat")) {
+                document.getElementById("leaveChat").remove()
+            }
             document.getElementById("friendMenu").style.display = "none";
             event.preventDefault();
             // sets a lot of useful data in sessionstorage
@@ -83,14 +86,14 @@ async function loadContacts() {
             if (event.target.getAttribute("key") == "groupchat") {
                 // creates the DELETE group chat button
                 let groupDiv = document.createElement("div")
-                groupDiv.setAttribute("class", "customMenuItem") 
-                groupDiv.setAttribute("id", "deleteGroup") 
+                groupDiv.setAttribute("class", "customMenuItem")
+                groupDiv.setAttribute("id", "deleteGroup")
                 groupDiv.innerHTML = "DELETE GROUPCHAT"
                 customContextMenu.appendChild(groupDiv)
-                // sets an eventlistener
+
                 groupDiv.addEventListener("click", () => {
                     // double checks with the user
-                    if (!window.confirm("You are about to delete the group chat, you sure you want to proceed?")){
+                    if (!window.confirm("You are about to delete the group chat, you sure you want to proceed?")) {
                         alert("Action succesfully aborted")
                         return
                     }
@@ -108,7 +111,62 @@ async function loadContacts() {
                     // refreshes the page to prevent bugs
                     window.location.reload()
                 })
+
+
+                let leaveChat = document.createElement("div")
+                leaveChat.setAttribute("class", "customMenuItem")
+                leaveChat.setAttribute("id", "leaveChat")
+                leaveChat.innerHTML = "LEAVE CHAT"
+                customContextMenu.appendChild(leaveChat)
+
+                leaveChat.addEventListener("click", () => {
+                    if (!confirm("you are leaving a chat, are you sure you want to proceed?")) {
+                        alert("action succesfully aborted")
+                        return
+                    }
+                    const data = {
+                        userID: sessionStorage.getItem("userID"),
+                        lobbyID: sessionStorage.getItem("lobbyAltering"),
+                        username: sessionStorage.getItem("username")
+                    }
+                    fetch("leave/chat", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    window.location.reload()
+                })
+                // sets an eventlistener
             }
+            // else if (event.target.getAttribute("key") == "direct"){
+            //     let blockUser = document.createElement("div")
+            //     blockUser.setAttribute("class", "customMenuItem") 
+            //     blockUser.setAttribute("id", "leaveChat") 
+            //     blockUser.innerHTML = "BLOCK CHAT"
+            //     customContextMenu.appendChild(blockUser)
+            //     blockUser.addEventListener("click", async () => {
+            //         if (!confirm("you are leaving a chat, are you sure you want to proceed?")) {
+            //             alert("action succesfully aborted")
+            //             return
+            //         }
+            //         const data = {
+            //             userID: sessionStorage.getItem("userID"),
+            //             lobbyID: sessionStorage.getItem("lobbyAltering"),
+            //             lobbyType
+            //         }
+            //         fetch("leave/chat", {
+            //             method: "POST",
+            //             headers: {
+            //                 'Content-Type': 'application/json'
+            //             },
+            //             body: JSON.stringify(data)
+            //         })
+            //         window.location.reload()
+            //     })
+            // }
+
 
             // Calculate the position of the custom context menu
             customContextMenu.style.left = event.clientX + 'px';
@@ -123,7 +181,7 @@ async function loadContacts() {
     if (document.getElementsByClassName("contactDiv")[0].childElementCount > 7) {
         document.getElementById("downArrow").style.display = "block";
     }
-    let contact =  document.getElementsByClassName("Contact")
+    let contact = document.getElementsByClassName("Contact")
     contact[(contact.length - 1)].style.marginBottom = "30vh"
 }
 var intervalActive = false
@@ -175,7 +233,7 @@ async function loadMessages(lobbyID, lobbyName) {
 
         // Refresh messages every second
     }
-    
+
     if (!intervalActive) {
         setInterval(newMessage, 1000);
         intervalActive = true
@@ -299,6 +357,8 @@ document.getElementById("menuItem1").addEventListener("click", async (event) => 
     inputField.focus();
     inputField.addEventListener("blur", rename);
 });
+
+
 
 // Function to rename lobby
 async function rename(event) {
@@ -440,7 +500,8 @@ const submitGroupChange = async () => {
         });
         const data = {
             lobbyID: sessionStorage.getItem("lobbyAltering"),
-            users: JSON.stringify(filteredUsers)
+            users: JSON.stringify(filteredUsers),
+            groupName: sessionStorage.getItem("chatter")
         };
         fetch("alter/Group", {
             method: "POST",
@@ -471,6 +532,7 @@ function simulateRightClick(element, clientX, clientY) {
 }
 
 // Event listener to submit group changes
+
 document.getElementsByClassName("submitAddGroup")[0].addEventListener("click", submitGroupChange);
 
 // Load contacts and friends

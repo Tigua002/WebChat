@@ -181,13 +181,15 @@ app.post("/alter/Group/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let allUsers = JSON.parse(req.body.users)
     let lobbyID = req.body.lobbyID
+    let groupName = req.body.groupName
     let query = ``
 
 
     for (let i = 0; i < allUsers.length; i++) {
         let user = allUsers[i]
-        query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName, type) VALUES (${user.id}, ${lobbyID}, '${user.name}', "groupchat", "groupchat") `
-        connection.query(query)
+        query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName, type) VALUES (${user.id}, ${lobbyID}, '${user.name}', "${groupName}", "groupchat") `
+        connection.query(query) 
+        connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES ( ${lobbyID} ,  "${user.name} joined the group" ,  "STATUS" )`)
 
     }
 })
@@ -200,7 +202,16 @@ app.post("/delete/group/", function (req, res) {
 
 
 })
-
+app.post("/leave/chat/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let username = req.body.username
+    let lobbyID = req.body.lobbyID
+    let userID = req.body.userID
+    
+    let query = `DELETE FROM connections WHERE clientID = ${userID} AND lobbyID = ${lobbyID}`
+    connection.query(query)
+    connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES ( ${lobbyID} ,  "${username} left the group" ,  "STATUS" )`)
+})
 
 
 app.get("/users", function (req, res) {

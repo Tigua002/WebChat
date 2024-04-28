@@ -15,7 +15,7 @@ async function login() {
     } else if (isValidString(password)) {
         alert("You are using invalid characters in your password!")
         return
-    } else if (brukernavn.includes("DELETED USER")) {
+    } else if (brukernavn.includes("DELETED USER") || brukernavn.includes("STATUS")) {
         alert("don't use reserved keywords")
         return
     }
