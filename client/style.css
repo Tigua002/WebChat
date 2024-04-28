@@ -3,9 +3,13 @@ body {
     margin: 0%;
     background-color: #131313;
 }
+
 #preventOverflow{
     overflow-y: hidden;
-    /* height: 200vh; */
+    height: 100vh;
+}
+html::-webkit-scrollbar{
+    display: none;
 }
 .header {
     height: 15vh;
@@ -118,6 +122,7 @@ body {
 
 #accountSettings {
     background: linear-gradient(#131313, #888888);
+
 }
 
 .accountInfo {
@@ -333,6 +338,13 @@ body {
     overflow-y: scroll;
     height: 85vh;
     justify-content: end;
+}
+.messageHolder::-webkit-scrollbar{
+    background-color: transparent;
+}
+.messageHolder::-webkit-scrollbar-thumb{
+    background-color: #2D3142;
+    border-radius: 2vw;
 }
 
 .message {

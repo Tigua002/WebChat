@@ -408,6 +408,11 @@ const submitGroupChange = async () => {
         }
     }
     if (sessionStorage.getItem("lobbyType") == "direct") {
+        console.log(checkedUsers.length);
+        if (checkedUsers.length <= 1) {
+            alert("To few users to initailize a new group")
+            return
+        }
         const data = {
             hostID: sessionStorage.getItem("userID"),
             hostName: sessionStorage.getItem("username"),
