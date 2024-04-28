@@ -47,11 +47,6 @@ async function loadContacts() {
         // Append elements to the contact div
         div.appendChild(title);
         div.appendChild(option);
-        if (i == users.length - 1) {
-            console.log("attempt");
-            div.style.marginBottom = "30vh"
-            console.log(div.style.marginBottom);
-        }
         // Add event listener for the option element
         option.addEventListener("click", (e) => {
             // Get the mouse coordinates relative to the viewport
@@ -128,6 +123,8 @@ async function loadContacts() {
     if (document.getElementsByClassName("contactDiv")[0].childElementCount > 7) {
         document.getElementById("downArrow").style.display = "block";
     }
+    let contact =  document.getElementsByClassName("Contact")
+    contact[(contact.length - 1)].style.marginBottom = "30vh"
 }
 var intervalActive = false
 // Function to load messages for a given lobby
