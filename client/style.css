@@ -326,7 +326,7 @@ html::-webkit-scrollbar{
 #downArrow{
     position: fixed;
     bottom: 0%;
-    left: 6%;
+    left: 9%;
     opacity: .5;
     display: none;
 }

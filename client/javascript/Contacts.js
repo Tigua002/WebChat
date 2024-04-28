@@ -47,7 +47,11 @@ async function loadContacts() {
         // Append elements to the contact div
         div.appendChild(title);
         div.appendChild(option);
-
+        if (i == users.length - 1) {
+            console.log("attempt");
+            div.style.marginBottom = "30vh"
+            console.log(div.style.marginBottom);
+        }
         // Add event listener for the option element
         option.addEventListener("click", (e) => {
             // Get the mouse coordinates relative to the viewport
@@ -335,6 +339,9 @@ const loadFriends = async () => {
     const friends = await response.json();
     for (let i = 0; i < friends.length; i++) {
         const friend = friends[i];
+        if (friend.senderName == "DELETED USER" || friend.recieverName == "DELETED USER") {
+            continue
+        }
         let name = document.createElement("h1");
         let checkbox = document.createElement("label");
         let div = document.createElement("div");
@@ -359,6 +366,8 @@ const loadFriends = async () => {
         div.appendChild(name);
         div.appendChild(checkbox);
         document.getElementById("friendMenu").appendChild(div);
+
+
     }
 };
 
@@ -443,6 +452,7 @@ const submitGroupChange = async () => {
             },
             body: JSON.stringify(data)
         });
+        window.location.reload()
     }
 };
 

@@ -66,7 +66,9 @@ async function changeUser() {
     // sets user and password the user inputs
     const data = {
         userID: sessionStorage.getItem("userID"),
-        newUser: newUser
+        newUser: newUser,
+        username: sessionStorage.getItem("username")
+
     }
     // sends the data to the database
     fetch("/change/user", {
@@ -134,8 +136,8 @@ function deleteAccount() {
     }
     // sets user and password the user inputs
     const data = {
-        oldUser: sessionStorage.getItem("username"),
-        pass: password
+        userID: sessionStorage.getItem("userID"),
+        username: sessionStorage.getItem("username")
     }
     // sends the data to the database
     fetch("/delete/user", {
@@ -220,7 +222,7 @@ if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
     window.location.assign("Login.html")
 }
 
-// document.getElementById("DeleteAccBtn").addEventListener("click", deleteAccount)
+document.getElementById("DeleteAccBtn").addEventListener("click", deleteAccount)
 document.getElementById("LogOutBtn").addEventListener("click", LogOut)
 document.getElementById("passwordChange").addEventListener("click", changePass)
 document.getElementById("usernameChange").addEventListener("click", changeUser)

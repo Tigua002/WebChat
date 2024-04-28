@@ -46,12 +46,13 @@ app.post("/change/user/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let userID = req.body.userID
     let newUser = req.body.newUser
-
+    let oldUser = req.body.username
     connection.query(`UPDATE clients set username = "${newUser}" WHERE clientID = ${userID}`)
     connection.query(`UPDATE connections set clientName = "${newUser}" WHERE clientID = ${userID}`)
 
     connection.query(`UPDATE friends SET senderName = "${newUser}" WHERE senderID= ${userID}`)
     connection.query(`UPDATE friends SET recieverName = "${newUser}" WHERE recieverID= ${userID}`)
+    connection.query(`UPDATE messages SET sender = "${newUser}" WHERE sender= "${oldUser}"`)
 })
 app.post("/change/password/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
@@ -63,14 +64,20 @@ app.post("/change/password/", function (req, res) {
     // legger til brukeren i users "table"
     connection.query(`UPDATE clients set password = "${newHiddenPass}" WHERE username = "${user}" AND password = "${hiddenPass}"`)
 })
-// app.post("/delete/user/", function (req, res) {
-//     // skaffer user og passord fra data-en og gir dem en verdi
-//     let oldUser = req.body.oldUser
-//     let password = req.body.pass
-//     let hiddenPass = md5(password)
-//     // legger til brukeren i users "table"
-//     connection.query(`UPDATE clients set username = "DELETED USER", status = "DELETED" WHERE username = "${oldUser}" AND password = "${hiddenPass}"`)
-// })
+app.post("/delete/user/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let userID = req.body.userID
+    let oldUser = req.body.username
+
+    connection.query(`UPDATE clients set username = "DELETED USER" WHERE clientID = ${userID}`)
+    connection.query(`UPDATE clients set status = "DELETED" WHERE clientID = ${userID}`)
+    connection.query(`UPDATE connections set clientName = "DELETED USER" WHERE clientID = ${userID}`)
+
+    connection.query(`UPDATE friends SET senderName = "DELETED USER" WHERE senderID= ${userID}`)
+    connection.query(`UPDATE friends SET recieverName = "DELETED USER" WHERE recieverID= ${userID}`)
+    connection.query(`UPDATE messages SET sender = "DELETED USER" WHERE sender= "${oldUser}"`)
+
+})
 app.post("/create/request/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let user = req.body.user
