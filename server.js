@@ -16,7 +16,13 @@ const connection = mysql.createConnection({
 });
 
 // connecter til databasen
-connection.connect();
+connection.connect(function (err) {
+    if (err) {
+        console.error("Error connectiong to database: \n", err)
+        return
+    }
+    console.log("MySQL database connected");
+})
 // andre nødvendige kommandoer
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -141,10 +147,10 @@ app.post("/create/Group/", function (req, res) {
     connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
         let data = JSON.parse(JSON.stringify(result))
         dataLength = data.length + 1
-        connection.query(`INSERT INTO lobbies (lobbyID, lobbyName) VALUES (${dataLength}, "groupchat")`)
+        connection.query(`INSERT INTO lobbies (lobbyID, lobbyName, type) VALUES (${dataLength}, "groupchat", "groupchat")`)
         for (let i = 0; i < allUsers.length; i++) {
             let user = allUsers[i]
-            query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName) VALUES (${user.id}, ${dataLength}, '${user.name}', "groupchat") `
+            query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName, type) VALUES (${user.id}, ${dataLength}, '${user.name}', "groupchat", "groupchat") `
             connection.query(query, function (err, result) {
                 if (err) {
                     console.error("Error executing query:", err);
@@ -154,7 +160,7 @@ app.post("/create/Group/", function (req, res) {
             })
 
         }
-        query = `INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (${dataLength}, ${hostID}, '${hostName}', "groupchat")`
+        query = `INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, type) VALUES (${dataLength}, ${hostID}, '${hostName}', "groupchat", "groupchat")`
         connection.query(query, function (err, result) {
             if (err) {
                 console.error("Error executing query:", err);
@@ -162,10 +168,21 @@ app.post("/create/Group/", function (req, res) {
                 return;
             }
         })
-        console.log(query);
-
     })
-    console.log(allUsers);
+})
+app.post("/alter/Group/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let allUsers = JSON.parse(req.body.users)
+    let lobbyID = req.body.lobbyID
+    let query = ``
+
+
+    for (let i = 0; i < allUsers.length; i++) {
+        let user = allUsers[i]
+        query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName, type) VALUES (${user.id}, ${lobbyID}, '${user.name}', "groupchat", "groupchat") `
+        connection.query(query)
+
+    }
 })
 
 app.get("/users", function (req, res) {

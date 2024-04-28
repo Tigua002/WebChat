@@ -18,13 +18,28 @@ async function loadContacts() {
         let div = document.createElement("div")
         div.setAttribute("class", "Contact")
         let title = document.createElement("input")
-        
+        let option = document.createElement("h1")
+        option.setAttribute("class", "friendOption")
+        div.setAttribute("id", users[i].lobbyID)
+        div.setAttribute("key", users[i].type)
         title.setAttribute("id", users[i].lobbyID)
         title.setAttribute("key", users[i].type)
+        option.setAttribute("id", users[i].lobbyID)
+        option.setAttribute("key", users[i].type)
         title.setAttribute("class", "contactTitle")
         title.setAttribute("readonly", "true")
         title.value = users[i].lobbyName
+        option.innerHTML = "&#x22EF;"
         div.appendChild(title)
+        div.appendChild(option)
+        option.addEventListener("click", (e) => {
+            // Get the mouse coordinates relative to the viewport
+            var clientX = e.clientX;
+            var clientY = e.clientY;
+
+            simulateRightClick(title, clientX, clientY)
+        })
+
         let element = document.getElementsByClassName("contactDiv")[0]
         element.appendChild(div)
         div.addEventListener("click", () => {
@@ -32,17 +47,17 @@ async function loadContacts() {
         })
 
 
-        title.addEventListener("contextmenu", (event) => {
+        div.addEventListener("contextmenu", (event) => {
             // Prevent the default context menu from appearing
             document.getElementById("friendMenu").style.display = "none"
             event.preventDefault();
-
             sessionStorage.setItem("lobbyType", event.target.getAttribute("key"))
-
             sessionStorage.setItem("lobbyAltering", event.target.id)
+            sessionStorage.setItem("optionOpen", true)
             // Calculate the position of the custom context menu
-            customContextMenu.style.left = event.pageX + 'px';
-            customContextMenu.style.top = event.pageY + 'px';
+
+            customContextMenu.style.left = event.clientX + 'px';
+            customContextMenu.style.top = event.clientY + 'px';
 
             // Display the custom context menu
             customContextMenu.style.display = 'block';
@@ -168,6 +183,10 @@ var customContextMenu = document.getElementById('customContextMenu');
 
 
 document.addEventListener("click", e => { // closes the new context menu on clicking outside
+    if (sessionStorage.getItem("optionOpen") == "true") {
+        sessionStorage.setItem("optionOpen", false)
+        return
+    }
     const dimensions = customContextMenu.getBoundingClientRect()
     const friendDimensions = document.getElementById("friendMenu").getBoundingClientRect()
     if (
@@ -241,7 +260,6 @@ const loadFriends = async () => {
         method: "GET"
     })
     const friends = await res.json()
-    console.log(friends);
     for (let i = 0; i < friends.length; i++) {
         const friend = friends[i]
         let name = document.createElement("h1")
@@ -326,15 +344,14 @@ const submitGroupChange = async () => {
         }
     }
 
-    
-    // Output the filtered users
-    const data = {
-        hostID: sessionStorage.getItem("userID"),
-        hostName: sessionStorage.getItem("username"),
-        users: JSON.stringify(checkedUsers),
-        
-    }
     if (sessionStorage.getItem("lobbyType") == "direct") {
+
+        const data = {
+            hostID: sessionStorage.getItem("userID"),
+            hostName: sessionStorage.getItem("username"),
+            users: JSON.stringify(checkedUsers),
+
+        }
         fetch("create/Group", {
             method: "POST",
             headers: {
@@ -342,14 +359,44 @@ const submitGroupChange = async () => {
             },
             body: JSON.stringify(data)
         })
-    }
-    var filteredUsers = checkedUsers.filter(function (user) {
-        // Check if any blacklisted member has the same name as the user
-        return !lobbyMembers.some(function (member) {
-            return member.clientName === user.name;
+    } else if (sessionStorage.getItem("lobbyType") == "groupchat") {
+
+        var filteredUsers = checkedUsers.filter(function (user) {
+            // Check if any blacklisted member has the same name as the user
+            return !lobbyMembers.some(function (member) {
+                return member.clientName === user.name;
+            });
         });
+        const data = {
+            lobbyID: sessionStorage.getItem("lobbyAltering"),
+            users: JSON.stringify(filteredUsers),
+
+        }
+        fetch("alter/Group", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+
+}
+
+function simulateRightClick(element, clientX, clientY) {
+    // Create a new MouseEvent object for a right-click event
+    var event = new MouseEvent('contextmenu', {
+        bubbles: true,
+        cancelable: false,
+        view: window,
+        button: 2, // 2 represents the right mouse button
+        buttons: 2, // 2 represents the right mouse button
+        clientX: clientX, // Mouse X-coordinate relative to the viewport
+        clientY: clientY // Mouse Y-coordinate relative to the viewport
     });
-    console.log(filteredUsers);
+
+    // Dispatch the event on the specified element
+    element.dispatchEvent(event);
 }
 
 document.getElementsByClassName("submitAddGroup")[0].addEventListener("click", submitGroupChange)
