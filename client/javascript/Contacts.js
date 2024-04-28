@@ -125,7 +125,7 @@ async function loadContacts() {
         document.getElementById("downArrow").style.display = "block";
     }
 }
-
+var intervalActive = false
 // Function to load messages for a given lobby
 async function loadMessages(lobbyID, lobbyName) {
     // Clear existing messages
@@ -173,7 +173,11 @@ async function loadMessages(lobbyID, lobbyName) {
         document.getElementsByClassName("messages")[0].appendChild(div);
 
         // Refresh messages every second
+    }
+    
+    if (!intervalActive) {
         setInterval(newMessage, 1000);
+        intervalActive = true
     }
 
     // Create text message input
@@ -238,14 +242,14 @@ async function newMessage() {
 
     // Get messages from the response
     const messages = await response.json();
-
     // If there are new messages, reload the corresponding lobby
     if (JSON.stringify(messages) == sessionStorage.getItem("messages")) {
+        console.log("no new messages");
         return;
     }
     let titles = document.getElementsByClassName("contactTitle");
     for (let i = 0; i < titles.length; i++) {
-        if (titles[i].innerHTML == sessionStorage.getItem("chatter")) {
+        if (titles[i].value == sessionStorage.getItem("chatter")) {
             titles[i].parentElement.click();
         }
     }

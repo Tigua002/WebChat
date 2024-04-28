@@ -121,7 +121,7 @@ app.post("/send/message/", function (req, res) {
     let message = req.body.message
     let sender = req.body.sender
     // legger til brukeren i users "table"
-    connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES (${lobbyID}, '${message}', '${sender}')`)
+    connection.execute('INSERT INTO messages (lobbyID, message, sender) VALUES ( ? ,  ? ,  ? )', [lobbyID, message, sender])
 })
 app.post("/rename/lobby/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi

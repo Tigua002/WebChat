@@ -1,4 +1,3 @@
-AUTO update messages
 prevent the creation of a 2 person groupchat
 DELETE USER
 LIST FRIENDS
