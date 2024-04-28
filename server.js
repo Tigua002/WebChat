@@ -42,16 +42,17 @@ app.post("/create/user/", function (req, res) {
 })
 
 
-// app.post("/change/user/", function (req, res) {
-//     // skaffer user og passord fra data-en og gir dem en verdi
-//     let oldUser = req.body.oldUser
-//     let newUser = req.body.newUsername
-//     let password = req.body.pass
-//     let hiddenPass = md5(password)
-//     // legger til brukeren i users "table"
-//     connection.query(`UPDATE clients set username = "${newUser}" WHERE username = "${oldUser}" AND password = "${hiddenPass}"`)
-//     connection.query(`ALTER TABLE ${oldUser}connections RENAME TO ${newUser}connections`)
-// })
+app.post("/change/user/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let userID = req.body.userID
+    let newUser = req.body.newUser
+
+    connection.query(`UPDATE clients set username = "${newUser}" WHERE clientID = ${userID}`)
+    connection.query(`UPDATE connections set clientName = "${newUser}" WHERE clientID = ${userID}`)
+
+    connection.query(`UPDATE friends SET senderName = "${newUser}" WHERE senderID= ${userID}`)
+    connection.query(`UPDATE friends SET recieverName = "${newUser}" WHERE recieverID= ${userID}`)
+})
 app.post("/change/password/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let user = req.body.user
@@ -186,10 +187,6 @@ app.post("/alter/Group/", function (req, res) {
 app.post("/delete/group/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let lobbyID = req.body.lobbyID
-
-
-
-    
     let query = `UPDATE lobbies SET type="DELETED" WHERE lobbyID = ${lobbyID}`
     connection.query(query)
     connection.query(`UPDATE connections SET type="DELETED" WHERE lobbyID = ${lobbyID}`)

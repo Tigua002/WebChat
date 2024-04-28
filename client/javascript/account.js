@@ -44,16 +44,7 @@ async function changeUser() {
         alert("don't use reserved keywords")
         return
     }
-    let password = prompt("What is your password?")
 
-    if (!isValidString(password)) {
-        alert("Wrong password")
-        return
-    }
-    if (!checkPassword(password)) {
-        alert("Wrong password")
-        return
-    }
     alert("passed")
     // getting all the users from the database
     const res = await fetch("/users",
@@ -66,7 +57,7 @@ async function changeUser() {
     // for loop going throug all the users
     for (let i = 0; i < users.length; i++) {
         // checking if the user picked a username which is already in use
-        if (users[i].username == brukernavn.toLowerCase()) {
+        if (users[i].username.toLowerCase() == newUser.toLowerCase()) {
             // sending an error message
             alert("The username has alredy been taken")
             return
@@ -74,9 +65,8 @@ async function changeUser() {
     }
     // sets user and password the user inputs
     const data = {
-        oldUser: sessionStorage.getItem("username"),
-        newUsername: newUser,
-        pass: password
+        userID: sessionStorage.getItem("userID"),
+        newUser: newUser
     }
     // sends the data to the database
     fetch("/change/user", {
@@ -233,4 +223,5 @@ if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
 // document.getElementById("DeleteAccBtn").addEventListener("click", deleteAccount)
 document.getElementById("LogOutBtn").addEventListener("click", LogOut)
 document.getElementById("passwordChange").addEventListener("click", changePass)
+document.getElementById("usernameChange").addEventListener("click", changeUser)
 document.getElementById("submitBio").addEventListener("click", saveBio)
