@@ -105,7 +105,6 @@ app.post("/accept/request/", function (req, res) {
     let user = req.body.user
     let sender = req.body.sender
     let senderName = req.body.senderName
-    console.log(req.body);
     connection.query(`INSERT INTO friends (senderID, recieverID, senderName, recieverName) VALUES (${sender}, ${userID}, '${senderName}', '${user}')`)
     connection.query(`DELETE FROM requests WHERE reciever = "${userID}" AND sender = "${sender}"`)
     connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
@@ -184,6 +183,21 @@ app.post("/alter/Group/", function (req, res) {
 
     }
 })
+app.post("/delete/group/", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let lobbyID = req.body.lobbyID
+
+
+
+    
+    let query = `UPDATE lobbies SET type="DELETED" WHERE lobbyID = ${lobbyID}`
+    connection.query(query)
+    connection.query(`UPDATE connections SET type="DELETED" WHERE lobbyID = ${lobbyID}`)
+
+
+})
+
+
 
 app.get("/users", function (req, res) {
     connection.query(`SELECT * FROM clients`, function (err, result, fields) {
