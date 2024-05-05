@@ -307,7 +307,7 @@ html::-webkit-scrollbar{
 
 .contactTitle {
     text-align: left;
-    font-size: 1.7vw;
+    font-size: 1.5vw;
     height: auto;
     margin: 0%;
     width: 90%;
@@ -351,15 +351,16 @@ html::-webkit-scrollbar{
     margin: .5vw 2vw .5vw 2vw;
     border: solid white 1px;
     padding: 0vw 1vw 0vw 1vw;
+    
 }
 
 .messageSender {
-    font-size: 2vw;
+    font-size: 1.3vw;
     color: #b86363;
 }
 
 .messageText {
-    font-size: 2vw;
+    font-size: 1.5vw;
     margin-left: 2vw;
     color: #888888;
 }

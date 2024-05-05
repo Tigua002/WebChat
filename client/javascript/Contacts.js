@@ -75,12 +75,24 @@ async function loadContacts() {
             if (document.getElementById("leaveChat")) {
                 document.getElementById("leaveChat").remove()
             }
+
             document.getElementById("friendMenu").style.display = "none";
             event.preventDefault();
             // sets a lot of useful data in sessionstorage
             sessionStorage.setItem("lobbyType", event.target.getAttribute("key"));
             sessionStorage.setItem("lobbyAltering", event.target.id);
             sessionStorage.setItem("optionOpen", true);
+            let titles = document.getElementsByClassName("contactTitle")
+            for (let i = 0; i < titles.length; i++) {
+
+                if (titles[i].id == sessionStorage.getItem("lobbyAltering")) {
+                    titles[i].parentElement.style.backgroundColor = "#b86363";
+                } else{
+                    titles[i].parentElement.style.backgroundColor = "#2D3142";
+
+                }
+            }
+            
             // delete groupchat function
             // checks if the selected item is a groupchat
             if (event.target.getAttribute("key") == "groupchat") {
@@ -140,32 +152,33 @@ async function loadContacts() {
                 })
                 // sets an eventlistener
             }
-            // else if (event.target.getAttribute("key") == "direct"){
-            //     let blockUser = document.createElement("div")
-            //     blockUser.setAttribute("class", "customMenuItem") 
-            //     blockUser.setAttribute("id", "leaveChat") 
-            //     blockUser.innerHTML = "BLOCK CHAT"
-            //     customContextMenu.appendChild(blockUser)
-            //     blockUser.addEventListener("click", async () => {
-            //         if (!confirm("you are leaving a chat, are you sure you want to proceed?")) {
-            //             alert("action succesfully aborted")
-            //             return
-            //         }
-            //         const data = {
-            //             userID: sessionStorage.getItem("userID"),
-            //             lobbyID: sessionStorage.getItem("lobbyAltering"),
-            //             lobbyType
-            //         }
-            //         fetch("leave/chat", {
-            //             method: "POST",
-            //             headers: {
-            //                 'Content-Type': 'application/json'
-            //             },
-            //             body: JSON.stringify(data)
-            //         })
-            //         window.location.reload()
-            //     })
-            // }
+            else if (event.target.getAttribute("key") == "direct") {
+                let leaveChat = document.createElement("div")
+                leaveChat.setAttribute("class", "customMenuItem")
+                leaveChat.setAttribute("id", "leaveChat")
+                leaveChat.innerHTML = "REMOVE CHAT"
+                customContextMenu.appendChild(leaveChat)
+
+                leaveChat.addEventListener("click", () => {
+                    if (!confirm("you are leaving a chat, are you sure you want to proceed?")) {
+                        alert("action succesfully aborted")
+                        return
+                    }
+                    const data = {
+                        userID: sessionStorage.getItem("userID"),
+                        lobbyID: sessionStorage.getItem("lobbyAltering"),
+                        username: sessionStorage.getItem("username")
+                    }
+                    fetch("leave/chat", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    window.location.reload()
+                })
+            }
 
 
             // Calculate the position of the custom context menu
@@ -352,9 +365,12 @@ document.getElementById("addUserMenu").addEventListener("click", () => {
 // Event listener for renaming lobby
 document.getElementById("menuItem1").addEventListener("click", async (event) => {
     event.target.parentElement.style.display = "none";
-    let inputField = document.getElementById(sessionStorage.getItem("lobbyAltering"));
+    let divSelect = document.getElementById(sessionStorage.getItem("lobbyAltering"));
+    let inputField = divSelect.getElementsByClassName("contactTitle")[0]
+    console.log(inputField);
     inputField.removeAttribute("readonly");
     inputField.focus();
+    console.log("assigned");
     inputField.addEventListener("blur", rename);
 });
 
@@ -370,7 +386,7 @@ async function rename(event) {
     sessionStorage.setItem("chatter", event.target.value);
     const data = {
         lobbyID: sessionStorage.getItem("lobbyAltering"),
-        lobbyName: document.getElementById(sessionStorage.getItem("lobbyAltering")).value
+        lobbyName: event.target.value
     };
     // Send data to the database
     fetch("/rename/lobby", {
