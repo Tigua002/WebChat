@@ -134,9 +134,9 @@ app.post("/rename/lobby/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
     let lobbyID = req.body.lobbyID
     let lobbyName = req.body.lobbyName
-
+    let username = req.body.username
     // legger til brukeren i users "table"
-
+    connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES (${lobbyID}, "${username} changed the name to '${lobbyName}'", "STATUS")`)
     connection.query(`UPDATE lobbies SET lobbyName = '${lobbyName}' WHERE lobbyID = ${lobbyID}`)
     connection.query(`UPDATE connections SET lobbyName = '${lobbyName}' WHERE lobbyID = ${lobbyID}`)
 })

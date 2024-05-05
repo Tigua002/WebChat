@@ -386,7 +386,8 @@ async function rename(event) {
     sessionStorage.setItem("chatter", event.target.value);
     const data = {
         lobbyID: sessionStorage.getItem("lobbyAltering"),
-        lobbyName: event.target.value
+        lobbyName: event.target.value,
+        username: sessionStorage.getItem("username")
     };
     // Send data to the database
     fetch("/rename/lobby", {
