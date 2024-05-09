@@ -3,7 +3,7 @@ if (!sessionStorage.getItem("username") ) {
     // If not logged in, redirect to the login page
     window.location.assign("Login.html");
 }
-
+document.getElementsByClassName("navLink")[0].style.backgroundColor = "#b86363"
 // Function to load contacts
 async function loadContacts() {
     // Get the user ID from session storage
@@ -263,7 +263,7 @@ async function loadMessages(lobbyID, lobbyName) {
     // Create text message input
     document.getElementsByClassName("TextMessage")[0].innerHTML = `
     <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
-    <h1 id="sendIcon">&#8674;</h1>
+    <input id="sendIcon" type="submit" value="&#8593;" >
     `;
     
     // Add event listener for sending message

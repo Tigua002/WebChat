@@ -3,6 +3,8 @@ if (!sessionStorage.getItem("username") ) {
     // If not logged in, redirect to the login page
     window.location.assign("Login.html");
 }
+document.getElementsByClassName("navLink")[2].style.backgroundColor = "#b86363"
+
 const loadFriends = async () => {
     let res = await fetch("/get/friends/" + sessionStorage.getItem("userID"), {
         method: "GET"

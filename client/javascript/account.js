@@ -1,3 +1,5 @@
+document.getElementsByClassName("navLink")[1].style.backgroundColor = "#b86363"
+
 async function LoadUser() {
     let found = false
     // getting all the users from the database

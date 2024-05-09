@@ -250,7 +250,6 @@ html::-webkit-scrollbar {
     color: #d3d3d3;
     background: linear-gradient(#131313, #888888);
     flex-direction: column;
-    margin-top: 10vh;
 }
 
 .NCTitle {
@@ -258,6 +257,7 @@ html::-webkit-scrollbar {
 }
 
 .NCForm {
+    margin-top: 10vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -401,7 +401,7 @@ html::-webkit-scrollbar {
 }
 
 .messageHolder {
-    width: 100%;
+    width: 70%;
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
@@ -460,7 +460,7 @@ html::-webkit-scrollbar {
     background-color: #212227;
     color: #888888;
     height: 5vw;
-    width: 90%;
+    width: 85%;
     margin: .5vw 1vw .5vw 2vw;
 }
 
@@ -470,6 +470,7 @@ html::-webkit-scrollbar {
     background: none;
     border: none;
     font-size: 4vw;
+    margin: .5vw;
 }
 
 #userBio {
@@ -697,6 +698,7 @@ html::-webkit-scrollbar {
 .friendPageHolder{
     display: flex;
     padding-left: 5vw;
+    padding-top: 5vh;
 }
 .friendsHolder {
     color: #d3d3d3;
@@ -760,5 +762,8 @@ html::-webkit-scrollbar {
     align-items: center;
     background-color: #888888;
     border-radius: 3vw;
+}
+.friendsLink:hover{
+    transform: scale(1.05);
 }
 

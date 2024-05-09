@@ -3,7 +3,7 @@ if (!sessionStorage.getItem("username") ) {
     // If not logged in, redirect to the login page
     window.location.assign("Login.html");
 }
-
+document.getElementsByClassName("navLink")[2].style.backgroundColor = "#b86363"
 var form = document.getElementsByClassName("NCholder")[0];
 function handleForm(event) { event.preventDefault(); }
 form.addEventListener('submit', handleForm);
