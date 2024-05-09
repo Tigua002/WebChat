@@ -343,57 +343,97 @@ app.get("/users/discovered", function (req, res) {
     })
 })
 
-
-
 app.get('/user/:a/:b', (req, res) => {
-    let password = md5(req.params.b)
-    connection.query(`SELECT * FROM clients WHERE username = "${req.params.a}" AND password = "${password}"`, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
-});
+    let password = md5(req.params.b);
 
+    // Use parameterized query to select user by username and password
+    connection.execute('SELECT * FROM clients WHERE username = ? AND password = ?', [req.params.a, password], function(err, result) {
+        if (err) {
+            console.error("Error retrieving user:", err);
+            res.status(500).send("Error retrieving user");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
+});
 app.get('/find/user/:a', (req, res) => {
-    connection.query(`SELECT * FROM clients WHERE username = "${req.params.a}" `, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
+    // Use parameterized query to select user by username
+    connection.execute('SELECT * FROM clients WHERE username = ?', [req.params.a], function(err, result) {
+        if (err) {
+            console.error("Error finding user:", err);
+            res.status(500).send("Error finding user");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
 });
 app.get('/contacts/user/:a', (req, res) => {
-    connection.query(`SELECT * FROM connections WHERE clientID = "${req.params.a}";`, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
+    // Use parameterized query to select contacts by user ID
+    connection.execute('SELECT * FROM connections WHERE clientID = ?', [req.params.a], function(err, result) {
+        if (err) {
+            console.error("Error retrieving contacts:", err);
+            res.status(500).send("Error retrieving contacts");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
 });
 
-
 app.get('/cont/message/:a', (req, res) => {
-    connection.query(`SELECT * FROM messages WHERE lobbyID = ${req.params.a}`, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
+    // Use parameterized query to select messages by lobbyID
+    connection.execute('SELECT * FROM messages WHERE lobbyID = ?', [req.params.a], function(err, result) {
+        if (err) {
+            console.error("Error retrieving messages:", err);
+            res.status(500).send("Error retrieving messages");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
 });
 
 app.get('/get/requests/:a', (req, res) => {
-    connection.query(`SELECT * FROM requests WHERE reciever="${req.params.a}" `, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
+    // Use parameterized query to select requests by receiver ID
+    connection.execute('SELECT * FROM requests WHERE reciever = ?', [req.params.a], function(err, result) {
+        if (err) {
+            console.error("Error retrieving requests:", err);
+            res.status(500).send("Error retrieving requests");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
 });
+
 app.get('/get/friends/:a', (req, res) => {
-    let query = `SELECT * FROM friends WHERE senderID="${req.params.a}" OR recieverID = "${req.params.a}" `
-    connection.query(query, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
+    // Use parameterized query to select friends by sender ID or receiver ID
+    connection.execute('SELECT * FROM friends WHERE senderID = ? OR recieverID = ?', [req.params.a, req.params.a], function(err, result) {
+        if (err) {
+            console.error("Error retrieving friends:", err);
+            res.status(500).send("Error retrieving friends");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
 });
+
 app.get('/get/lobbyMembers/:a', (req, res) => {
-    let query = `SELECT * FROM connections WHERE lobbyID="${req.params.a}"`
-    connection.query(query, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))
-        res.send(data)
-    })
+    // Use parameterized query to select lobby members by lobbyID
+    connection.execute('SELECT * FROM connections WHERE lobbyID = ?', [req.params.a], function(err, result) {
+        if (err) {
+            console.error("Error retrieving lobby members:", err);
+            res.status(500).send("Error retrieving lobby members");
+            return;
+        }
+        let data = JSON.parse(JSON.stringify(result));
+        res.send(data);
+    });
 });
+
 
 
 app.use(express.static("client"))
