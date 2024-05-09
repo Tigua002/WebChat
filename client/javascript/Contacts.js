@@ -202,20 +202,19 @@ var intervalActive = false
 async function loadMessages(lobbyID, lobbyName) {
     // Clear existing messages
     document.getElementsByClassName("messages")[0].innerHTML = "";
-
     // Request messages for the given lobby from the database
     const response = await fetch("/cont/message/" + lobbyID, {
         method: "GET"
     });
-
+    
     // Get messages from the response
     const messages = await response.json();
-
+    
     // Set session storage variables
     sessionStorage.setItem("messages", JSON.stringify(messages));
     sessionStorage.setItem("chatter", lobbyName);
     sessionStorage.setItem("lobby", lobbyID);
-
+    
     // Highlight selected contact
     let titles = document.getElementsByClassName("contactTitle");
     for (let i = 0; i < titles.length; i++) {
@@ -225,39 +224,50 @@ async function loadMessages(lobbyID, lobbyName) {
             titles[i].parentElement.style.backgroundColor = "#2D3142";
         }
     }
-
+    
     // Create message elements
     for (let i = 0; i < messages.length; i++) {
         let div = document.createElement("div");
         let sender = document.createElement("h1");
         let message = document.createElement("h1");
-
+        let pfpDiv = document.createElement("div")
+        let pfp = document.createElement("img")
+        let userInfoDiv = document.createElement("div")
         // Set attributes and content
         div.setAttribute("class", "message");
+        pfpDiv.setAttribute("class", "userMessagePFP");
+        userInfoDiv.setAttribute("class", "userInfoMessage");
+        pfp.setAttribute("class", "friendProfilePic");
         sender.setAttribute("class", "messageSender");
         message.setAttribute("class", "messageText");
+        pfp.setAttribute("src", "userInput/profilePictures/" + messages[i].profile)
+        
         sender.innerHTML = messages[i].sender + ":";
         message.innerHTML = messages[i].message;
-
+        
+        
         // Append elements
-        div.appendChild(sender);
+        div.appendChild(userInfoDiv);
+        userInfoDiv.appendChild(pfpDiv)
+        pfpDiv.appendChild(pfp)
+        userInfoDiv.appendChild(sender)
         div.appendChild(message);
         document.getElementsByClassName("messages")[0].appendChild(div);
 
         // Refresh messages every second
     }
-
+    
     if (!intervalActive) {
         setInterval(newMessage, 1000);
         intervalActive = true
     }
-
+    
     // Create text message input
     document.getElementsByClassName("TextMessage")[0].innerHTML = `
-        <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
-        <h1 id="sendIcon">&#8674;</h1>
+    <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
+    <h1 id="sendIcon">&#8674;</h1>
     `;
-
+    
     // Add event listener for sending message
     let icon = document.getElementById("sendIcon");
     icon.addEventListener("click", () => {
@@ -274,7 +284,9 @@ async function sendMessage(lobbyID) {
     const data = {
         lobbyID: lobbyID,
         sender: sessionStorage.getItem("username"),
-        message: TextMessage
+        message: TextMessage,
+        userID: sessionStorage.getItem("userID"),
+        pfp: sessionStorage.getItem("PFP")
     };
     // Send data to the database
     fetch("/send/message", {
@@ -316,7 +328,6 @@ async function newMessage() {
     const messages = await response.json();
     // If there are new messages, reload the corresponding lobby
     if (JSON.stringify(messages) == sessionStorage.getItem("messages")) {
-        console.log("no new messages");
         return;
     }
     let titles = document.getElementsByClassName("contactTitle");
@@ -367,10 +378,8 @@ document.getElementById("menuItem1").addEventListener("click", async (event) => 
     event.target.parentElement.style.display = "none";
     let divSelect = document.getElementById(sessionStorage.getItem("lobbyAltering"));
     let inputField = divSelect.getElementsByClassName("contactTitle")[0]
-    console.log(inputField);
     inputField.removeAttribute("readonly");
     inputField.focus();
-    console.log("assigned");
     inputField.addEventListener("blur", rename);
 });
 
@@ -491,7 +500,6 @@ const submitGroupChange = async () => {
         }
     }
     if (sessionStorage.getItem("lobbyType") == "direct") {
-        console.log(checkedUsers.length);
         if (checkedUsers.length <= 1) {
             alert("To few users to initailize a new group")
             return

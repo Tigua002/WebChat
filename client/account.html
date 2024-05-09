@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="header" >
+    <div class="header">
         <h1 class="CompanyLogo">Webchat</h1>
         <div class="navBar">
             <a href="Contacts.html" class="navLink">
@@ -18,8 +18,8 @@
             <a href="Login.html" class="navLink">
                 <h1 class="navLink" id="accLink">Log In</h1>
             </a>
-            <a href="NewContact.html" class="navLink">
-                <h1 class="navLink">Add Contact</h1>
+            <a href="friends.html" class="navLink">
+                <h1 class="navLink">Friends</h1>
             </a>
             <a href="" class="navLink">
                 <h1 class="navLink">About</h1>
@@ -36,6 +36,23 @@
             <h1 class="accountTitle">PASSWORD:</h1>
             <h1 id="password" class="accountDisplay">##########</h1>
             <h1 class="accountBtns" id="passwordChange">CHANGE</h1>
+        </div>
+        <div class="accountPFP">
+
+            <div class="accountPFPDiv">
+
+                <img class="friendProfilePic" src="userInput/profilePictures/catImage.png" alt="profile pictures">
+            </div>
+            <form id="fileForm" enctype="multipart/form-data">
+                <!-- Specify allowed file types (PNG and JPG) -->
+                <!-- HTML -->
+                <label for="fileInput" id="customFileInput">
+                    Upload a File
+                </label>
+                <input type="file" id="fileInput" name="file" accept="image/png, image/jpeg" style="display: none;">
+
+                <button type="submit" id="submitPFPChange">UPDATE</button>
+            </form>
         </div>
         <div class="accountInfo">
             <h1 class="accountTitle">BIO:</h1>

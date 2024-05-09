@@ -1,9 +1,9 @@
-
-LIST FRIENDS
+Fix status profile picture
+Bug when showing the option of who can be added to a group, seems most friends are listed
+GIVE the user an option to send files 
 BLOCK USER
 REMOVE FRIEND
 VIEW MULTIPLE CHATS at once
 SET UP "ABOUT" page
 NICKNAMES for friends
 PREVENT MySQL injections
-GIVE the user an option to send files

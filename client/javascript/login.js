@@ -31,6 +31,7 @@ async function login() {
     if (user.length == 1) {
         sessionStorage.setItem("username", user[0].username)
         sessionStorage.setItem("userID", user[0].clientID)
+        sessionStorage.setItem("PFP", user[0].PFPlink)
     } else if (user.length == 0) {
         alert("Hhmm, Something is wrong")
         return

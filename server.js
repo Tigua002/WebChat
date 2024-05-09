@@ -3,6 +3,9 @@ const express = require('express')
 const app = express();
 const bodyParser = require('body-parser');
 const md5 = require('md5')
+const fs = require('fs');
+const multer = require('multer');
+const upload = multer({ dest: 'client/userInput/profilePictures' });
 // definerer porten jeg skal bruke
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server is running on this port: ${PORT}`));
@@ -127,8 +130,10 @@ app.post("/send/message/", function (req, res) {
     let lobbyID = req.body.lobbyID
     let message = req.body.message
     let sender = req.body.sender
+    let userID = req.body.userID
+    let pfp = req.body.pfp
     // legger til brukeren i users "table"
-    connection.execute('INSERT INTO messages (lobbyID, message, sender) VALUES ( ? ,  ? ,  ? )', [lobbyID, message, sender])
+    connection.execute('INSERT INTO messages (lobbyID, message, sender, clientID, profile) VALUES ( ? ,  ? ,  ?, ?, ?)', [lobbyID, message, sender, userID, pfp])
 })
 app.post("/rename/lobby/", function (req, res) {
     // skaffer user og passord fra data-en og gir dem en verdi
@@ -136,7 +141,7 @@ app.post("/rename/lobby/", function (req, res) {
     let lobbyName = req.body.lobbyName
     let username = req.body.username
     // legger til brukeren i users "table"
-    connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES (${lobbyID}, "${username} changed the name to '${lobbyName}'", "STATUS")`)
+    connection.query(`INSERT INTO messages (lobbyID, message, sender, profile) VALUES (${lobbyID}, "${username} changed the name to '${lobbyName}'", "STATUS", "systemAdmin.png")`)
     connection.query(`UPDATE lobbies SET lobbyName = '${lobbyName}' WHERE lobbyID = ${lobbyID}`)
     connection.query(`UPDATE connections SET lobbyName = '${lobbyName}' WHERE lobbyID = ${lobbyID}`)
 })
@@ -188,7 +193,7 @@ app.post("/alter/Group/", function (req, res) {
     for (let i = 0; i < allUsers.length; i++) {
         let user = allUsers[i]
         query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName, type) VALUES (${user.id}, ${lobbyID}, '${user.name}', "${groupName}", "groupchat") `
-        connection.query(query) 
+        connection.query(query)
         connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES ( ${lobbyID} ,  "${user.name} joined the group" ,  "STATUS" )`)
 
     }
@@ -207,11 +212,45 @@ app.post("/leave/chat/", function (req, res) {
     let username = req.body.username
     let lobbyID = req.body.lobbyID
     let userID = req.body.userID
-    
+
     let query = `DELETE FROM connections WHERE clientID = ${userID} AND lobbyID = ${lobbyID}`
     connection.query(query)
     connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES ( ${lobbyID} ,  "${username} left the group" ,  "STATUS" )`)
 })
+app.post('/upload', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded');
+    }
+    let userID = req.body.userID;
+    const date = new Date();
+    const dateString = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}/${date.getHours()}/${date.getMinutes()}/${date.getSeconds()}/${date.getMilliseconds()}`;
+    
+    // Here, you may process the uploaded file as needed (e.g., save it to a specific location)
+    const parts = req.file.originalname.split('.');
+    const extension = parts[parts.length - 1];
+    const customFilename = md5(dateString) + "." + extension;
+
+    // Set the path where the uploaded file will be saved
+    const filePath = `client/userInput/profilePictures/${customFilename}`;
+
+    // Move the uploaded file to the specified path with the custom filename
+    fs.rename(req.file.path, filePath, (err) => {
+        if (err) {
+            console.error('Error saving file:', err);
+            return res.status(500).send('Error saving file');
+        }
+
+        // Update database records
+        connection.query(`UPDATE clients SET PFPlink = "${customFilename}" WHERE clientID=${userID}`);
+        connection.query(`UPDATE friends SET senderPFP = "${customFilename}" WHERE senderID=${userID}`);
+        connection.query(`UPDATE friends SET recieverPFP = "${customFilename}" WHERE recieverID=${userID}`);
+        connection.query(`UPDATE messages SET profile = "${customFilename}" WHERE clientID=${userID}`);
+
+        // Send back the file name to the client
+        res.send({ filename: customFilename });
+    });
+});
+
 
 
 app.get("/users", function (req, res) {

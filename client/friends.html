@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebChat || Login</title>
+    <title>WebChat || Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -26,19 +26,23 @@
             </a>
         </div>
     </div>
-    <div class="formHolder">
-        <form class="loginForm" onsubmit="login()">
-            <h1 class="LoginTitle">Login</h1>
-            <label for="username" class="inputLabel">USERNAME</label>
-            <input type="text" class="inputForms" id="username">
-            <label for="password" class="inputLabel">PASSWORD</label>
-            <input type="password" class="inputForms" id="password">
-            <h1 class="logText">Don't have an account? <a href="signUp.html" class="loginText">SIGN UP</a></h1>
-            <input type="submit" class="submitBtn">
-        </form>
+    <div class="friendPageHolder">
+        <div class="friendsHolder">
+            <!-- <div class="friendDiv">
+                <div class="friendPFPDiv">
+    
+                    <img class="friendProfilePic" src="userInput/profilePictures/catImage.png" alt="profile pictures">
+                </div>
+                <h1 class="friendName">Timur</h1>
+            </div> -->
+        </div>
+        <div class="friendLinkHolder">
+
+            <a href="NewContact.html" class="friendsLink">ADD FRIEND</a>
+        </div>
     </div>
 
 </body>
-<script src="javascript/login.js"></script>
+<script src="javascript/friends.js"></script>
 
 </html>

@@ -1,11 +1,44 @@
-CREATE TABLE clients (username VARCHAR(70), password VARCHAR(70), lastChat VARCHAR(100), BIO longtext, status varchar(50) DEFAULT 'hidden', clientID INT PRIMARY KEY auto_increment);
+CREATE TABLE clients (
+username VARCHAR(70),
+ password VARCHAR(70), 
+lastChat VARCHAR(100), 
+BIO longtext, 
+status varchar(50) DEFAULT 'hidden', 
+clientID INT PRIMARY KEY auto_increment, 
+PFPlink VARCHAR(255) default 'catImage.png', 
+senderPFP VARCHAR(255) default 'catImage.png', 
+recieverPFP VARCHAR(255) default 'catImage.png'
+);
 
-CREATE TABLE connections (lobbyID int, clientID int, clientName VARCHAR(255), lobbyName VARCHAR(255), type VARCHAR(255) DEFAULT 'direct');
+CREATE TABLE connections (
+lobbyID int,
+clientID int,
+clientName VARCHAR(255),
+lobbyName VARCHAR(255),
+type VARCHAR(255) DEFAULT 'direct'
+);
 
-CREATE TABLE friends (senderID int, recieverID int, senderName VARCHAR(255), recieverName VARCHAR(255));
 
-CREATE TABLE lobbies (lobbyID int PRIMARY KEY auto_increment, lobbyName varchar(255), type VARCHAR(255) default 'direct');
+CREATE TABLE friends (senderID int,
+ recieverID int,
+ senderName VARCHAR(255),
+ recieverName VARCHAR(255)
+ );
 
-CREATE TABLE messages (lobbyID int, message LONGTEXT, sender VARCHAR(255), messageID int PRIMARY KEY auto_increment);
+CREATE TABLE lobbies (lobbyID int PRIMARY KEY auto_increment,
+ lobbyName varchar(255),
+ type VARCHAR(255) default 'direct'
+ );
 
-CREATE TABLE requests (sender VARCHAR(100), reciever varchar(100), senderUsername VARCHAR(100));
+CREATE TABLE messages (lobbyID int,
+ message LONGTEXT,
+ sender VARCHAR(255),
+ messageID int PRIMARY KEY auto_increment,
+ profile VARCHAR(255) DEFAULT 'catImage.png'
+ clientID INT
+ );
+
+CREATE TABLE requests (sender VARCHAR(100),
+ reciever varchar(100),
+ senderUsername VARCHAR(100)
+ );

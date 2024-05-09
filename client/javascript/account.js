@@ -7,11 +7,11 @@ async function LoadUser() {
         })
     // assinging the variable users to the database responce
     const users = await res.json()
-    console.log(sessionStorage);
     for (let i = 0; i < users.length; i++) {
         if (users[i].username == sessionStorage.getItem("username") && users[i].clientID == sessionStorage.getItem("userID")) {
             document.getElementById("username").innerHTML = sessionStorage.getItem("username")
             document.getElementById("userBio").value = users[i].BIO
+            document.getElementsByClassName("friendProfilePic")[0].src = "userInput/profilePictures/" + users[i].PFPlink
             if (users[i].status == "discoverable") {
                 document.getElementById("checked").checked = true
             }
@@ -201,7 +201,39 @@ async function checkPassword(password) {
     }    
 }    
 
+document.getElementById('fileForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    
+    const formData = new FormData();
+    const fileInput = document.getElementById('fileInput').files[0];
+    
+    // Append the file and its name to the FormData object
+    formData.append('file', fileInput);
+    formData.append('filename', fileInput.name); // Include the file name
+    formData.append("userID", sessionStorage.getItem("userID"))
+    // Send the FormData object to the server
+    const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+    });
+    const data = await response.json()
+    console.log(response.json());
+    if (response.ok) {
+        // If the file was successfully uploaded, trigger its download
+        alert("File uploaded successfully!");
+        sessionStorage.setItem("PFP", data.filename)
+    } else {
+        console.error('Failed to upload file');
+    }
+});
 
+const fileInput = document.getElementById('fileInput');
+const fileInputLabel = document.getElementById('customFileInput');
+
+fileInput.addEventListener('change', (event) => {
+    const fileName = event.target.files[0].name;
+    fileInputLabel.innerText = fileName;
+});
 
 
 function isValidString(inputString) {

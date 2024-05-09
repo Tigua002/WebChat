@@ -4,13 +4,15 @@ body {
     background-color: #131313;
 }
 
-#preventOverflow{
+#preventOverflow {
     overflow-y: hidden;
     height: 100vh;
 }
-html::-webkit-scrollbar{
+
+html::-webkit-scrollbar {
     display: none;
 }
+
 .header {
     height: 15vh;
     display: flex;
@@ -129,6 +131,7 @@ html::-webkit-scrollbar{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .accountTitle {
@@ -151,11 +154,57 @@ html::-webkit-scrollbar{
     font-size: 2.6vw;
     cursor: pointer;
 }
+.accountPFP{
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.accountPFPDiv {
+    width: 12vw;
+    height: 12vw;
+    overflow: hidden;
+    border-radius: 50%;
+    cursor: pointer;
+}
+/* CSS */
+#customFileInput {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #888888;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1vw;
+}
+#customFileInput:hover{
+    background-color: #2D3142;
+}
+#submitPFPChange{
+    margin-top: 1vw;
+    padding: 10px 15px;
+    background-color: #888888;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+#submitPFPChange:hover{
+    background-color: #2D3142;
+}
 
-.accountInfo {
+.friendProfilePic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+#fileForm{
     display: flex;
     flex-direction: column;
 }
+
 
 #LogOutBtn {
     font-size: 2.6vw;
@@ -295,13 +344,15 @@ html::-webkit-scrollbar{
     width: 0%;
     display: none;
 }
-.friendOption{
+
+.friendOption {
     margin: 0%;
     padding: .5rem;
     cursor: pointer;
     font-size: 1.7vw;
 }
-.friendOption:hover{
+
+.friendOption:hover {
     opacity: .7;
 }
 
@@ -319,11 +370,13 @@ html::-webkit-scrollbar{
     padding: 1rem;
 
 }
-.contactTitle:focus{
+
+.contactTitle:focus {
     border: none;
-    outline: none   ;
+    outline: none;
 }
-#downArrow{
+
+#downArrow {
     position: fixed;
     bottom: 0%;
     left: 9%;
@@ -339,10 +392,12 @@ html::-webkit-scrollbar{
     height: 85vh;
     justify-content: end;
 }
-.messageHolder::-webkit-scrollbar{
+
+.messageHolder::-webkit-scrollbar {
     background-color: transparent;
 }
-.messageHolder::-webkit-scrollbar-thumb{
+
+.messageHolder::-webkit-scrollbar-thumb {
     background-color: #2D3142;
     border-radius: 2vw;
 }
@@ -351,18 +406,29 @@ html::-webkit-scrollbar{
     margin: .5vw 2vw .5vw 2vw;
     border: solid white 1px;
     padding: 0vw 1vw 0vw 1vw;
-    
+
 }
 
 .messageSender {
     font-size: 1.3vw;
     color: #b86363;
+    margin-left: .7vw;
 }
 
 .messageText {
     font-size: 1.5vw;
     margin-left: 2vw;
     color: #888888;
+}
+.userInfoMessage{
+    display: flex;
+    align-items: center;
+    margin: .3vw;
+    
+}
+.userMessagePFP{
+    width: 2vw;
+    height: 2vw;
 }
 
 .TextMessage {
@@ -418,13 +484,15 @@ html::-webkit-scrollbar{
     opacity: 0;
     position: absolute;
 }
-#checked + label{
+
+#checked+label {
     display: flex;
     position: relative;
     align-items: center;
     cursor: pointer;
 }
-#checked + label::before{
+
+#checked+label::before {
     content: "";
     width: 6em;
     height: 3em;
@@ -433,7 +501,8 @@ html::-webkit-scrollbar{
     border-radius: 3em;
     transition: 200ms ease-in-out;
 }
-#checked + label::after{
+
+#checked+label::after {
     position: absolute;
     left: .3em;
     content: "";
@@ -443,11 +512,13 @@ html::-webkit-scrollbar{
     border-radius: 3em;
     transition: 200ms ease-in-out;
 }
-#checked:checked + label::after{
+
+#checked:checked+label::after {
     transform: translateX(100%);
     background-color: rgb(80, 80, 80);
 }
-#checked:checked + label::before{
+
+#checked:checked+label::before {
     background-color: rgb(89, 89, 89);
 }
 
@@ -521,11 +592,13 @@ html::-webkit-scrollbar{
     display: none;
     color: #888888;
 }
+
 .customMenuItem {
     padding: 8px 12px;
     cursor: pointer;
 }
-#friendMenu{
+
+#friendMenu {
     position: fixed;
     background-color: #212227;
     top: 0%;
@@ -536,9 +609,11 @@ html::-webkit-scrollbar{
     max-height: 40vh;
     overflow-y: scroll;
 }
-#friendMenu::-webkit-scrollbar{
+
+#friendMenu::-webkit-scrollbar {
     display: none;
 }
+
 .friend {
     position: relative;
     display: flex;
@@ -552,9 +627,10 @@ html::-webkit-scrollbar{
     user-select: none;
 }
 
-.friendName{
+.friendName {
     margin: 0%;
 }
+
 .usercheck {
     position: absolute;
     opacity: 0;
@@ -579,9 +655,76 @@ html::-webkit-scrollbar{
 }
 
 /* Corrected selector to style the custom checkbox when the actual checkbox is checked */
-.usercheck:checked + .customCheckboxStyle .custom-checkbox {
-    background-color: red; /* Adjusted style for the checked state */
+.usercheck:checked+.customCheckboxStyle .custom-checkbox {
+    background-color: red;
+    /* Adjusted style for the checked state */
     opacity: 1;
 }
 
+.friendPageHolder{
+    display: flex;
+}
+.friendsHolder {
+    color: #d3d3d3;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.friendDiv {
+    display: flex;
+    align-items: center;
+    height: 20vh;
+    overflow: hidden;
+    background-color: #212227;
+    width: 95%;
+    padding-left: 1vw;
+    border: solid #888888 1px;
+}
+.friendDiv:hover{
+    background-color: #b86363;
+}
+.friendPFPDiv {
+    width: 12vh;
+    height: 12vh;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 2vw;
+    cursor: pointer;
+}
+.friendProfilePic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+
+}
+.friendName{
+    font-size: 3.5vw;
+    cursor: pointer;
+}
+.friendName:hover{
+    transform: scale(1.05);
+}
+.friendPFPDiv:hover{
+    transform: scale(1.05);
+}
+.friendLinkHolder{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+.friendsLink{
+    text-decoration: none;
+    color: white;
+    font-size: 2vw;
+    margin-top: 2vw;
+    padding: 1vw;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #888888;
+    border-radius: 3vw;
+}
 
