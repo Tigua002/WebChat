@@ -1,5 +1,7 @@
-if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
-    document.getElementById("accLink").innerHTML = "Account"
+// Check if the user is logged in
+if (!sessionStorage.getItem("username") ) {
+    // If not logged in, redirect to the login page
+    window.location.assign("Login.html");
 }
 
 var form = document.getElementsByClassName("NCholder")[0];

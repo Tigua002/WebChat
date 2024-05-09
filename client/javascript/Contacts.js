@@ -1,8 +1,5 @@
 // Check if the user is logged in
-if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
-    // If logged in, set the innerHTML of the element with id "accLink" to "Account"
-    document.getElementById("accLink").innerHTML = "Account";
-} else {
+if (!sessionStorage.getItem("username") ) {
     // If not logged in, redirect to the login page
     window.location.assign("Login.html");
 }
@@ -196,6 +193,7 @@ async function loadContacts() {
     }
     let contact = document.getElementsByClassName("Contact")
     contact[(contact.length - 1)].style.marginBottom = "30vh"
+    contact[0].style.marginTop = "5vh"
 }
 var intervalActive = false
 // Function to load messages for a given lobby
@@ -430,7 +428,7 @@ const loadFriends = async () => {
         let div = document.createElement("div");
 
         // Set attributes and content
-        name.setAttribute("class", "friendName");
+        name.setAttribute("class", "friendMenuName");
         checkbox.setAttribute("class", "custom-checkbox");
         div.setAttribute("class", "friend");
         div.addEventListener("click", checkboxFunctionality);

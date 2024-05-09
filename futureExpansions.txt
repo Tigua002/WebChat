@@ -1,5 +1,3 @@
-Fix status profile picture
-Bug when showing the option of who can be added to a group, seems most friends are listed
 GIVE the user an option to send files 
 BLOCK USER
 REMOVE FRIEND

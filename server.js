@@ -194,7 +194,7 @@ app.post("/alter/Group/", function (req, res) {
         let user = allUsers[i]
         query = `INSERT INTO connections (clientID, lobbyID, clientName, lobbyName, type) VALUES (${user.id}, ${lobbyID}, '${user.name}', "${groupName}", "groupchat") `
         connection.query(query)
-        connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES ( ${lobbyID} ,  "${user.name} joined the group" ,  "STATUS" )`)
+        connection.query(`INSERT INTO messages (lobbyID, message, sender, profile) VALUES ( ${lobbyID} ,  "${user.name} joined the group" ,  "STATUS", "systemAdmin.png" )`)
 
     }
 })
@@ -215,7 +215,7 @@ app.post("/leave/chat/", function (req, res) {
 
     let query = `DELETE FROM connections WHERE clientID = ${userID} AND lobbyID = ${lobbyID}`
     connection.query(query)
-    connection.query(`INSERT INTO messages (lobbyID, message, sender) VALUES ( ${lobbyID} ,  "${username} left the group" ,  "STATUS" )`)
+    connection.query(`INSERT INTO messages (lobbyID, message, sender, profile) VALUES ( ${lobbyID} ,  "${username} left the group" ,  "STATUS", "systemAdmin.png" )`)
 })
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {

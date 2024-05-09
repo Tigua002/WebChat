@@ -7,6 +7,7 @@ body {
 #preventOverflow {
     overflow-y: hidden;
     height: 100vh;
+    
 }
 
 html::-webkit-scrollbar {
@@ -14,28 +15,42 @@ html::-webkit-scrollbar {
 }
 
 .header {
-    height: 15vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+    flex-direction: column;
+    height: 100vh;
+    width: 5vw;
+    position: fixed;
     background-color: #131313;
+    z-index: 10;
+    overflow: hidden;
 }
 
 .navBar {
     display: flex;
     justify-content: space-around;
     width: 55%;
+    flex-direction: column;
 }
 
 .CompanyLogo {
     color: rgb(199, 199, 199);
     margin-left: 1%;
+    border: solid red 1px;
 }
 
 .navLink {
     text-decoration: none;
     color: rgb(199, 199, 199);
     font-size: 2.6vw;
+    width: 100%;
+    padding: 1vw;
+}
+.navLink:hover{
+    background-color: #888888;
+}
+.navImg{
+    width: 100%;
 }
 
 .formHolder {
@@ -318,6 +333,7 @@ html::-webkit-scrollbar {
     height: 100%;
     display: flex;
     flex-direction: row;
+    margin-left: 5vw;
 }
 
 .contactDiv {
@@ -327,7 +343,7 @@ html::-webkit-scrollbar {
     padding-bottom: 10vh;
     overflow-y: scroll;
     position: relative;
-    max-height: 75vh;
+    max-height: 100vh;
 }
 
 .Contact {
@@ -389,7 +405,7 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
-    height: 85vh;
+    height: 100vh;
     justify-content: end;
 }
 
@@ -597,7 +613,23 @@ html::-webkit-scrollbar {
     padding: 8px 12px;
     cursor: pointer;
 }
-
+.customMenuItem:hover{
+    background-color: #888888;
+    color: #2D3142;
+}
+.submitAddGroup{
+    margin: 1vw auto 1vw auto;
+    background-color: #888888;
+    color: #2D3142;
+    border-radius: 2vw;
+    padding: 1vw;
+    font-size: 1.5vw;
+    cursor: pointer;
+}
+.submitAddGroup:hover{
+    background-color: #2D3142;
+    color: #888888;
+}
 #friendMenu {
     position: fixed;
     background-color: #212227;
@@ -611,7 +643,8 @@ html::-webkit-scrollbar {
 }
 
 #friendMenu::-webkit-scrollbar {
-    display: none;
+    background-color: #2D3142;
+    border-radius: 2vw;
 }
 
 .friend {
@@ -627,7 +660,7 @@ html::-webkit-scrollbar {
     user-select: none;
 }
 
-.friendName {
+.friendMenuName {
     margin: 0%;
 }
 
@@ -663,6 +696,7 @@ html::-webkit-scrollbar {
 
 .friendPageHolder{
     display: flex;
+    padding-left: 5vw;
 }
 .friendsHolder {
     color: #d3d3d3;

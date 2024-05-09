@@ -1,12 +1,8 @@
 // Check if the user is logged in
-if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
-    // If logged in, set the innerHTML of the element with id "accLink" to "Account"
-    document.getElementById("accLink").innerHTML = "Account";
-} else {
+if (!sessionStorage.getItem("username") ) {
     // If not logged in, redirect to the login page
     window.location.assign("Login.html");
 }
-
 const loadFriends = async () => {
     let res = await fetch("/get/friends/" + sessionStorage.getItem("userID"), {
         method: "GET"
