@@ -1,10 +1,10 @@
+if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
+    window.location.assign("account.html")
+}
 var form = document.getElementsByClassName("formHolder")[0];
 function handleForm(event) { event.preventDefault(); }
 form.addEventListener('submit', handleForm);
 
-if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
-    window.location.assign("account.html")
-}
 
 async function login() {
     let brukernavn = document.getElementById("username").value
