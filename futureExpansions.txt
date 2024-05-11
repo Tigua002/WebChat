@@ -4,4 +4,5 @@ REMOVE FRIEND
 VIEW MULTIPLE CHATS at once
 SET UP "ABOUT" page
 NICKNAMES for friends
-PREVENT MySQL injections
+Test PREVENT MySQL injections
+Maybe utilise some form of discord api's

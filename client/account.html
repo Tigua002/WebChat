@@ -25,47 +25,51 @@
             </a>
         </div>
     </div>
+
     <div class="accountInfo" id="accountSettings">
-        <div class="accountInfo">
-            <h1 class="accountTitle">USERNAME:</h1>
-            <h1 id="username" class="accountDisplay"></h1>
-            <h1 class="accountBtns" id="usernameChange">CHANGE</h1>
-        </div>
-        <div class="accountInfo">
-            <h1 class="accountTitle">PASSWORD:</h1>
-            <h1 id="password" class="accountDisplay">##########</h1>
-            <h1 class="accountBtns" id="passwordChange">CHANGE</h1>
-        </div>
-        <div class="accountPFP">
+        <div class="accountSettings">
 
-            <div class="accountPFPDiv">
-
-                <img class="friendProfilePic" src="userInput/profilePictures/catImage.png" alt="profile pictures">
+            <div class="accountInfo">
+                <h1 class="accountTitle">USERNAME:</h1>
+                <h1 id="username" class="accountDisplay"></h1>
+                <button class="accountBtns" id="usernameChange">CHANGE</button>
             </div>
-            <form id="fileForm" enctype="multipart/form-data">
-                <!-- Specify allowed file types (PNG and JPG) -->
-                <!-- HTML -->
-                <label for="fileInput" id="customFileInput">
-                    Upload a File
-                </label>
-                <input type="file" id="fileInput" name="file" accept="image/png, image/jpeg" style="display: none;">
+            <div class="accountInfo" id="centerAccount">
+                <h1 class="accountTitle">PASSWORD:</h1>
+                <h1 id="password" class="accountDisplay">##########</h1>
+                <button class="accountBtns" id="passwordChange">CHANGE</button>
+            </div>
+            <div class="accountPFP">
 
-                <button type="submit" id="submitPFPChange">UPDATE</button>
-            </form>
+                <div class="accountPFPDiv">
+
+                    <img class="friendProfilePic" src="userInput/profilePictures/catImage.png" alt="profile pictures">
+                </div>
+                <form id="fileForm" enctype="multipart/form-data">
+                    <!-- Specify allowed file types (PNG and JPG) -->
+                    <!-- HTML -->
+                    <label for="fileInput" id="customFileInput" tabindex="0">
+                        Upload a File
+                    </label>
+                    <input type="file"  id="fileInput" name="file" accept="image/png, image/jpeg" style="display: none;">
+
+                    <button type="submit" id="submitPFPChange">UPDATE</button>
+                </form>
+            </div>
         </div>
-        <div class="accountInfo">
-            <h1 class="accountTitle">BIO:</h1>
-            <textarea id="userBio" cols="50" rows="10"></textarea>
+        <div class="DiscoverSettings">
             <div class="container">
-                <h1 class="accountTitle">Discoverable?</h1>
-                <h1 class="accountUnderText">Makes you visible to other users under "discover"</h1>
-                <div class="swiperContainer">
-                    <input type="checkbox" id="checked">
-                    <label for="checked"></label>
+                <h1 class="DiscTitle">Discoverable?</h1>
+                <h1 class="accountUnderText" id="accountUnderText">Makes you visible to other users under "discover"</h1>
+                <div class="swiperContainer" >
+                    <input type="checkbox" id="checked" tabindex="0">
+                    <label for="checked" id="inputLabel" ></label>
                 </div>
             </div>
-            <h1 id="submitBio" class="accountBtns">SAVE</h1>
+            <h1 class="accountTitle">BIO:</h1>
+            <textarea id="userBio" cols="50" rows="10"></textarea>
         </div>
+        <button id="submitBio" class="accountBtns">SAVE</button>
         <div class="accountInfo">
             <h1 id="LogOutBtn">LOG OUT</h1>
             <h1 id="DeleteAccBtn">DELETE ACCOUNT</h1>

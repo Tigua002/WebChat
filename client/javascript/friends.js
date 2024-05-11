@@ -29,7 +29,6 @@ const loadFriends = async () => {
             friendPFP = friend.senderPFP
             
         }
-        console.log(friendName, friendId, friendPFP);
         let div = document.createElement("div")
         let pfpDiv = document.createElement("div")
         let pfp = document.createElement("img")

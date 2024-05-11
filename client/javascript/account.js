@@ -250,12 +250,29 @@ function isValidString(inputString) {
 
 if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
     LoadUser()
-    document.getElementById("accLink").innerHTML = "Account"
-
 } else {
     window.location.assign("Login.html")
 }
+let hoverTime;
+document.getElementsByClassName("DiscTitle")[0].addEventListener("mouseover", event => {
 
+    hoverTime = setTimeout(() => {
+        let popupText = document.getElementById("accountUnderText")
+        console.log("entered custom styles");
+        popupText.style.opacity = "1"
+
+        console.log(event.clientY);
+        console.log(event.clientX);
+        popupText.style.left = event.clientX + 'px';
+        popupText.style.top = event.clientY + 'px';
+
+    }, 800)
+})
+
+document.getElementsByClassName("DiscTitle")[0].addEventListener("mouseout", event => {
+    document.getElementById("accountUnderText").style.opacity = "0"
+    clearTimeout(hoverTime)
+})
 document.getElementById("DeleteAccBtn").addEventListener("click", deleteAccount)
 document.getElementById("LogOutBtn").addEventListener("click", LogOut)
 document.getElementById("passwordChange").addEventListener("click", changePass)
