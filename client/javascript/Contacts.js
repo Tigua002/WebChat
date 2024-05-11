@@ -4,6 +4,9 @@ if (!sessionStorage.getItem("username") ) {
     window.location.assign("Login.html");
 }
 document.getElementsByClassName("navLink")[0].style.backgroundColor = "#b86363"
+
+
+
 // Function to load contacts
 async function loadContacts() {
     // Get the user ID from session storage
@@ -270,6 +273,13 @@ async function loadMessages(lobbyID, lobbyName) {
     let icon = document.getElementById("sendIcon");
     icon.addEventListener("click", () => {
         sendMessage(lobbyID);
+    });
+    document.getElementById('personalMessage').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            console.log("pressed enter");
+            event.preventDefault(); // Prevent default Enter behavior (new line)
+            document.getElementById('sendIcon').click(); // Submit the form
+        }
     });
 }
 

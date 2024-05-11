@@ -499,6 +499,7 @@ html::-webkit-scrollbar {
     height: 5vw;
     width: 85%;
     margin: .5vw 1vw .5vw 2vw;
+    resize: none;
 }
 
 #sendIcon {
@@ -517,6 +518,7 @@ html::-webkit-scrollbar {
     color: white;
     padding: 1vw;
     width: 50%;
+    resize: none;
 }
 #userBio::-webkit-scrollbar{
     display: none;
