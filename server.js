@@ -322,6 +322,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
         connection.execute('UPDATE friends SET senderPFP = ? WHERE senderID = ?', [customFilename, userID]);
         connection.execute('UPDATE friends SET recieverPFP = ? WHERE recieverID = ?', [customFilename, userID]);
         connection.execute('UPDATE messages SET profile = ? WHERE clientID = ?', [customFilename, userID]);
+        connection.execute('UPDATE connections SET PFP = ? WHERE clientID = ?', [customFilename, userID]);
 
         res.send({ filename: customFilename });
     });

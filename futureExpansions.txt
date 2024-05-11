@@ -1,8 +1,8 @@
 GIVE the user an option to send files 
 Better UX/UI when changing username and password
 VIEW MULTIPLE CHATS at once
-Modify database to include user PFP
 Allow user to modify and delete message after it was sendt
+Modify database to include user PFP
 BLOCK USER
 REMOVE FRIEND
 SET UP "ABOUT" page

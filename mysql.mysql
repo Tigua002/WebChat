@@ -15,7 +15,8 @@ lobbyID int,
 clientID int,
 clientName VARCHAR(255),
 lobbyName VARCHAR(255),
-type VARCHAR(255) DEFAULT 'direct'
+type VARCHAR(255) DEFAULT 'direct',
+ PFP VARCHAR(255) DEFAULT 'catImage.png'
 );
 
 
