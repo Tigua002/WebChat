@@ -1,3 +1,4 @@
+Bug when adding friend, the profile picture is not correct
 GIVE the user an option to send files 
 Better UX/UI when changing username and password
 VIEW MULTIPLE CHATS at once

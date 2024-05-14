@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebChat || Home</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #FFF;
+            opacity: .8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #212227;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #888888;
+            border: none;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            border: 1px solid #2D3142;
+            border-radius: 5px;
+            text-align: left;
+        }
+        .text{
+            color: #fff;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="navBar">
+            <a href="Contacts.html" class="navLink" style="margin-top: 2vw;">
+                <img src="bilder/icons8-contacts-250.png" alt="" class="navImg">
+            </a>
+            <a href="Login.html" class="navLink">
+                <img src="bilder/icons8-settings-250.png" alt="" class="navImg">
+            </a>
+            <a href="friends.html" class="navLink">
+                <img src="bilder/icons8-friends-100.png" alt="" class="navImg">
+            </a>
+            <a href="aboutuss.html" class="navLink">
+                <img src="bilder/icons8-about-250.png" alt="" class="navImg">
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Who We Are</h2>
+        <p>We are a team of passionate developers who believe in making communication easier and more accessible for
+            everyone. Our mission is to provide a reliable and user-friendly webchat service that connects people from
+            all around the world.</p>
+
+        <h2>Our Vision</h2>
+        <p>Our vision is to create a platform where people can connect, share ideas, and build meaningful relationships
+            in a safe and secure environment. We strive to continuously improve our service and innovate new features to
+            meet the evolving needs of our users.</p>
+
+        <h2>Why Choose Us?</h2>
+        <p>There are many reasons to choose our webchat service:</p>
+        <ul>
+            <li>Simple and intuitive interface</li>
+            <li>Fast and reliable messaging</li>
+            <li>Secure and private communication</li>
+            <li>24/7 customer support</li>
+        </ul>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feedback, or suggestions, please feel free to contact us:</p>
+        <p>Email: gusarov.timur@gmail.com</p>
+    </div>
+    <div class="faq-container">
+        <h1 class="faqTitle" style="color: #FFF;">FAQ</h1>
+        <div class="faq-item">
+            <button class="faq-question">How do i add a friend?</button>
+            <div class="faq-answer">
+                <p class="text">You can add a friend by going to the 3 navigation bar element, pressing the "add friend" button.
+                    Then just pass in the player in question's username and press submit! The user will then find a request.
+                </p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">How does my friend accept my friend request?</button>
+            <div class="faq-answer">
+                <p class="text">Going back to the "add friend" page, you can scroll down and see all requests, then justs decide how to treat the request.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">How do i create a group chat?</button>
+            <div class="faq-answer">
+                <p class="text">When inspecting any chat on the "contact" page (by right click) you can select add user, and then just select your friends and submit it.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Can i rename a chat?</button>
+            <div class="faq-answer">
+                <p class="text">Yes! When inspecting any chat on the "contact" page (by right click) you can select rename, and then just rename the chat.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">How can i become discoverable?</button>
+            <div class="faq-answer">
+                <p class="text">When navigating the settings page, scrolling down you have to switch the "discoverable?" switch, and then just write your bio!</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Can i change my username?</button>
+            <div class="faq-answer">
+                <p class="text">Yes! When looking at the settings page, you can change your username and password.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="javascript/aboutUs.js">
+
+</script>
+
+</html>

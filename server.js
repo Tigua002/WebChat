@@ -24,7 +24,6 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) {
         console.error("Error connectiong to database: \n", err)
-        return
     }
     console.log("MySQL database connected");
 })
@@ -176,13 +175,18 @@ app.post("/accept/request/", function (req, res) {
         connection.execute('DELETE FROM requests WHERE reciever = ? AND sender = ?', [userID, sender]);
 
         // Insert into lobbies
-        connection.query('INSERT INTO lobbies (lobbyID, lobbyName) VALUES ((SELECT MAX(lobbyID) + 1 FROM lobbies), ?)', [`${user}TO${senderName}`]);
-        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES ((SELECT MAX(lobbyID) FROM lobbies), ?, ?, ?)', [userID, user, `${user}TO${senderName}`]);
-        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES ((SELECT MAX(lobbyID) FROM lobbies), ?, ?, ?)', [sender, senderName, `${user}TO${senderName}`]);
-
-        res.send("Request accepted successfully");
     });
+    connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
+        let data = JSON.parse(JSON.stringify(result))        
+        connection.query('INSERT INTO lobbies (lobbyID, lobbyName) VALUES (?, ?)', [data.length + 1, `${user}TO${senderName}`]);
+        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (?, ?, ?, ?)', [data.length + 1,userID, user, `${user}TO${senderName}`]);
+        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (?, ?, ?, ?)', [data.length + 1,sender, senderName, `${user}TO${senderName}`]);
+    })
+    res.send("Request accepted successfully");
 });
+
+
+
 app.post("/send/message/", function (req, res) {
     let lobbyID = req.body.lobbyID;
     let message = req.body.message;

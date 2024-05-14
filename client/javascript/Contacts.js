@@ -499,8 +499,7 @@ const submitGroupChange = async () => {
     const checkedUsers = [];
     for (let i = 0; i < document.getElementsByClassName("custom-checkbox").length; i++) {
         const checkbox = document.getElementsByClassName("custom-checkbox")[i];
-
-        let name = checkbox.parentElement.getElementsByClassName("friendName")[0];
+        let name = checkbox.parentElement.getElementsByClassName("friendMenuName")[0];
         if (checkbox.checked == true) {
             checkedUsers.push(
                 { name: name.innerHTML, id: name.id }

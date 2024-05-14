@@ -500,6 +500,7 @@ html::-webkit-scrollbar {
     width: 85%;
     margin: .5vw 1vw .5vw 2vw;
     resize: none;
+    
 }
 
 #sendIcon {
@@ -510,7 +511,11 @@ html::-webkit-scrollbar {
     font-size: 4vw;
     margin: .5vw;
 }
-
+.FileAttachment{
+    width: 5vw;
+    margin: 1vw;
+    padding: 0%;
+}
 #userBio {
     background: #2D3142;
     border: none;
