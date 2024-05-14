@@ -22,9 +22,11 @@ async function loadContacts() {
 
     // Iterate through the user contacts
     for (let i = 0; i < users.length; i++) {
+        // Skip deleted contacts
         if (users[i].type == "DELETED") {
-            continue
+            continue;
         }
+
         // Create elements for each contact
         let div = document.createElement("div");
         let title = document.createElement("input");
@@ -47,6 +49,7 @@ async function loadContacts() {
         // Append elements to the contact div
         div.appendChild(title);
         div.appendChild(option);
+
         // Add event listener for the option element
         option.addEventListener("click", (e) => {
             // Get the mouse coordinates relative to the viewport
@@ -78,18 +81,17 @@ async function loadContacts() {
 
             document.getElementById("friendMenu").style.display = "none";
             event.preventDefault();
+
             // sets a lot of useful data in sessionstorage
             sessionStorage.setItem("lobbyType", event.target.getAttribute("key"));
             sessionStorage.setItem("lobbyAltering", event.target.id);
             sessionStorage.setItem("optionOpen", true);
             let titles = document.getElementsByClassName("contactTitle")
             for (let i = 0; i < titles.length; i++) {
-
                 if (titles[i].id == sessionStorage.getItem("lobbyAltering")) {
                     titles[i].parentElement.style.backgroundColor = "#b86363";
-                } else{
+                } else {
                     titles[i].parentElement.style.backgroundColor = "#2D3142";
-
                 }
             }
             
@@ -124,7 +126,6 @@ async function loadContacts() {
                     window.location.reload()
                 })
 
-
                 let leaveChat = document.createElement("div")
                 leaveChat.setAttribute("class", "customMenuItem")
                 leaveChat.setAttribute("id", "leaveChat")
@@ -151,8 +152,7 @@ async function loadContacts() {
                     window.location.reload()
                 })
                 // sets an eventlistener
-            }
-            else if (event.target.getAttribute("key") == "direct") {
+            } else if (event.target.getAttribute("key") == "direct") {
                 let leaveChat = document.createElement("div")
                 leaveChat.setAttribute("class", "customMenuItem")
                 leaveChat.setAttribute("id", "leaveChat")
@@ -180,7 +180,6 @@ async function loadContacts() {
                 })
             }
 
-
             // Calculate the position of the custom context menu
             customContextMenu.style.left = event.clientX + 'px';
             customContextMenu.style.top = event.clientY + 'px';
@@ -194,15 +193,20 @@ async function loadContacts() {
     if (document.getElementsByClassName("contactDiv")[0].childElementCount > 7) {
         document.getElementById("downArrow").style.display = "block";
     }
+
+    // Add margins to the first and last contact
     let contact = document.getElementsByClassName("Contact")
     contact[(contact.length - 1)].style.marginBottom = "30vh"
     contact[0].style.marginTop = "5vh"
 }
+
 var intervalActive = false
+
 // Function to load messages for a given lobby
 async function loadMessages(lobbyID, lobbyName) {
     // Clear existing messages
     document.getElementsByClassName("messages")[0].innerHTML = "";
+    
     // Request messages for the given lobby from the database
     const response = await fetch("/cont/message/" + lobbyID, {
         method: "GET"
@@ -234,6 +238,7 @@ async function loadMessages(lobbyID, lobbyName) {
         let pfpDiv = document.createElement("div")
         let pfp = document.createElement("img")
         let userInfoDiv = document.createElement("div")
+        
         // Set attributes and content
         div.setAttribute("class", "message");
         pfpDiv.setAttribute("class", "userMessagePFP");
@@ -246,7 +251,6 @@ async function loadMessages(lobbyID, lobbyName) {
         sender.innerHTML = messages[i].sender + ":";
         message.innerHTML = messages[i].message;
         
-        
         // Append elements
         div.appendChild(userInfoDiv);
         userInfoDiv.appendChild(pfpDiv)
@@ -254,10 +258,9 @@ async function loadMessages(lobbyID, lobbyName) {
         userInfoDiv.appendChild(sender)
         div.appendChild(message);
         document.getElementsByClassName("messages")[0].appendChild(div);
-
-        // Refresh messages every second
     }
     
+    // Refresh messages every second
     if (!intervalActive) {
         setInterval(newMessage, 1000);
         intervalActive = true
@@ -274,9 +277,10 @@ async function loadMessages(lobbyID, lobbyName) {
     icon.addEventListener("click", () => {
         sendMessage(lobbyID);
     });
+    
+    // Add event listener for "Enter" key to send message
     document.getElementById('personalMessage').addEventListener('keydown', function(event) {
         if (event.key === 'Enter' && !event.shiftKey) {
-            console.log("pressed enter");
             event.preventDefault(); // Prevent default Enter behavior (new line)
             document.getElementById('sendIcon').click(); // Submit the form
         }
@@ -285,10 +289,15 @@ async function loadMessages(lobbyID, lobbyName) {
 
 // Function to send a message
 async function sendMessage(lobbyID) {
+    // Get the message from the input field
     let TextMessage = document.getElementById("personalMessage").value;
+    
+    // Check if the message is empty
     if (TextMessage == "") {
         return;
     }
+    
+    // Prepare data to send to the server
     const data = {
         lobbyID: lobbyID,
         sender: sessionStorage.getItem("username"),
@@ -296,7 +305,8 @@ async function sendMessage(lobbyID) {
         userID: sessionStorage.getItem("userID"),
         pfp: sessionStorage.getItem("PFP")
     };
-    // Send data to the database
+    
+    // Send data to the server
     fetch("/send/message", {
         method: "POST",
         headers: {
@@ -304,22 +314,23 @@ async function sendMessage(lobbyID) {
         },
         body: JSON.stringify(data)
     });
-    // Clear input field
+    
+    // Clear the input field after sending the message
     document.getElementById("personalMessage").value = "";
 
-    // Create message elements
+    // Create message elements for the sent message
     let div = document.createElement("div");
     let sender = document.createElement("h1");
     let message = document.createElement("h1");
 
-    // Set attributes and content
+    // Set attributes and content for the message elements
     div.setAttribute("class", "message");
     sender.setAttribute("class", "messageSender");
     message.setAttribute("class", "messageText");
     sender.innerHTML = sessionStorage.getItem("username") + ":";
     message.innerHTML = TextMessage;
 
-    // Append elements
+    // Append message elements to the message container
     div.appendChild(sender);
     div.appendChild(message);
     document.getElementsByClassName("messages")[0].appendChild(div);
@@ -334,13 +345,19 @@ async function newMessage() {
 
     // Get messages from the response
     const messages = await response.json();
-    // If there are new messages, reload the corresponding lobby
+    
+    // Check if there are new messages
+    // If the new messages are the same as the previously stored messages, no action is needed
     if (JSON.stringify(messages) == sessionStorage.getItem("messages")) {
         return;
     }
+
+    // If there are new messages, reload the corresponding lobby
     let titles = document.getElementsByClassName("contactTitle");
     for (let i = 0; i < titles.length; i++) {
+        // Find the title matching the current chatter
         if (titles[i].value == sessionStorage.getItem("chatter")) {
+            // Simulate a click on the contact to reload messages
             titles[i].parentElement.click();
         }
     }
@@ -348,24 +365,32 @@ async function newMessage() {
 
 // Event listener to close the context menu on clicking outside
 document.addEventListener("click", e => {
+    // Check if the custom context menu is open
     if (sessionStorage.getItem("optionOpen") == "true") {
+        // If the context menu is open, do nothing
         sessionStorage.setItem("optionOpen", false);
         return;
     }
+
+    // Get the dimensions of the custom context menu and friend menu
     const dimensions = customContextMenu.getBoundingClientRect();
     const friendDimensions = document.getElementById("friendMenu").getBoundingClientRect();
+
+    // Check if the click is outside the custom context menu
     if (
         e.clientX < dimensions.left ||
         e.clientX > dimensions.right ||
         e.clientY < dimensions.top ||
         e.clientY > dimensions.bottom
     ) {
+        // Check if the click is outside the friend menu as well
         if (
             e.clientX < friendDimensions.left ||
             e.clientX > friendDimensions.right ||
             e.clientY < friendDimensions.top ||
             e.clientY > friendDimensions.bottom
         ) {
+            // If the click is outside both menus, hide the custom context menu
             customContextMenu.style.display = 'none';
             document.getElementById("friendMenu").style.display = "none";
         }
@@ -374,8 +399,13 @@ document.addEventListener("click", e => {
 
 // Event listener to open the friend menu
 document.getElementById("addUserMenu").addEventListener("click", () => {
+    // Get the friend menu element
     let friendMenu = document.getElementsByClassName("friendsMenu")[0];
+    
+    // Display the friend menu
     friendMenu.style.display = "flex";
+
+    // Calculate the position of the friend menu relative to the custom context menu
     let designatedLeft = parseInt(customContextMenu.style.left.replace("px", "")) + customContextMenu.offsetWidth;
     friendMenu.style.left = designatedLeft + "px";
     friendMenu.style.top = customContextMenu.offsetTop + "px";
@@ -383,30 +413,45 @@ document.getElementById("addUserMenu").addEventListener("click", () => {
 
 // Event listener for renaming lobby
 document.getElementById("menuItem1").addEventListener("click", async (event) => {
+    // Hide the context menu
     event.target.parentElement.style.display = "none";
+    
+    // Get the selected lobby div and its input field
     let divSelect = document.getElementById(sessionStorage.getItem("lobbyAltering"));
-    let inputField = divSelect.getElementsByClassName("contactTitle")[0]
+    let inputField = divSelect.getElementsByClassName("contactTitle")[0];
+
+    // Enable editing and focus on the input field
     inputField.removeAttribute("readonly");
     inputField.focus();
+
+    // Add event listener for when input field loses focus (blur)
     inputField.addEventListener("blur", rename);
 });
 
-
-
 // Function to rename lobby
 async function rename(event) {
+    // Check if lobby altering information is available
     if (!sessionStorage.getItem("lobbyAltering")) {
         return;
     }
+    
+    // Set input field to read-only
     event.target.setAttribute("readonly", "true");
+
+    // Remove event listener for blur
     event.target.removeEventListener("blur", rename);
+    
+    // Update session storage with the new lobby name
     sessionStorage.setItem("chatter", event.target.value);
+    
+    // Prepare data for sending to the server
     const data = {
         lobbyID: sessionStorage.getItem("lobbyAltering"),
         lobbyName: event.target.value,
         username: sessionStorage.getItem("username")
     };
-    // Send data to the database
+    
+    // Send data to the server to rename the lobby
     fetch("/rename/lobby", {
         method: "POST",
         headers: {
@@ -414,9 +459,13 @@ async function rename(event) {
         },
         body: JSON.stringify(data)
     });
+
+    // Remove click event listener from parent element
     event.target.parentElement.removeEventListener("click", () => {
         loadMessages();
     });
+    
+    // Reload the page to reflect the changes
     window.location.reload();
 }
 
@@ -426,13 +475,20 @@ const loadFriends = async () => {
     const response = await fetch("/get/friends/" + sessionStorage.getItem("userID"), {
         method: "GET"
     });
+
     // Get friends from the response
     const friends = await response.json();
+
+    // Iterate through the user's friends
     for (let i = 0; i < friends.length; i++) {
         const friend = friends[i];
+        
+        // Skip if friend is deleted
         if (friend.senderName == "DELETED USER" || friend.recieverName == "DELETED USER") {
-            continue
+            continue;
         }
+
+        // Create elements for friend
         let name = document.createElement("h1");
         let checkbox = document.createElement("label");
         let div = document.createElement("div");
@@ -443,6 +499,7 @@ const loadFriends = async () => {
         div.setAttribute("class", "friend");
         div.addEventListener("click", checkboxFunctionality);
 
+        // Determine friend ID and name based on sender and receiver
         let friendID;
         let friendName;
         if (friend.senderID == sessionStorage.getItem("userID")) {
@@ -452,70 +509,73 @@ const loadFriends = async () => {
             friendID = friend.senderID;
             friendName = friend.senderName;
         }
+
         name.innerHTML = friendName;
         name.setAttribute("id", friendID);
         div.appendChild(name);
         div.appendChild(checkbox);
         document.getElementById("friendMenu").appendChild(div);
-
-
     }
 };
 
 // Function for checkbox functionality
 const checkboxFunctionality = e => {
     e.preventDefault();
+    let checkbox;
     if (e.target.className == "friend") {
-        if (e.target.getElementsByClassName("custom-checkbox")[0].checked == true) {
-            e.target.getElementsByClassName("custom-checkbox")[0].checked = false;
-            e.target.getElementsByClassName("custom-checkbox")[0].innerHTML = "";
-            e.target.getElementsByClassName("custom-checkbox")[0].style.opacity = ".3";
-        } else {
-            e.target.getElementsByClassName("custom-checkbox")[0].checked = true;
-            e.target.getElementsByClassName("custom-checkbox")[0].innerHTML = "&#x2713;";
-            e.target.getElementsByClassName("custom-checkbox")[0].style.opacity = "1";
-            e.target.getElementsByClassName("custom-checkbox")[0].style.border = "white 1px solid";
-        }
+        checkbox = e.target.getElementsByClassName("custom-checkbox")[0];
     } else {
-        if (e.target.parentElement.getElementsByClassName("custom-checkbox")[0].checked == true) {
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].checked = false;
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].innerHTML = "";
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].style.opacity = ".3";
-        } else {
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].checked = true;
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].innerHTML = "&#x2713;";
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].style.opacity = "1";
-            e.target.parentElement.getElementsByClassName("custom-checkbox")[0].style.border = "white 1px solid";
-        }
+        checkbox = e.target.parentElement.getElementsByClassName("custom-checkbox")[0];
+    }
+    if (checkbox.checked) {
+        checkbox.checked = false;
+        checkbox.innerHTML = "";
+        checkbox.style.opacity = ".3";
+    } else {
+        checkbox.checked = true;
+        checkbox.innerHTML = "&#x2713;";
+        checkbox.style.opacity = "1";
+        checkbox.style.border = "white 1px solid";
     }
 };
 
 // Function to submit group changes
 const submitGroupChange = async () => {
+    // Fetch lobby members from the server
     const res = await fetch("/get/lobbyMembers/" + sessionStorage.getItem("lobbyAltering"), {
         method: "GET"
     });
     let lobbyMembers = await res.json();
+
+    // Initialize an array to store checked users
     const checkedUsers = [];
+
+    // Iterate through custom checkboxes
     for (let i = 0; i < document.getElementsByClassName("custom-checkbox").length; i++) {
         const checkbox = document.getElementsByClassName("custom-checkbox")[i];
         let name = checkbox.parentElement.getElementsByClassName("friendMenuName")[0];
+
+        // If checkbox is checked, add user to checkedUsers array
         if (checkbox.checked == true) {
             checkedUsers.push(
                 { name: name.innerHTML, id: name.id }
             );
         }
     }
+
+    // If lobby type is direct
     if (sessionStorage.getItem("lobbyType") == "direct") {
+        // Check if there are enough users to initialize a new group
         if (checkedUsers.length <= 1) {
-            alert("To few users to initailize a new group")
-            return
+            alert("Too few users to initialize a new group");
+            return;
         }
         const data = {
             hostID: sessionStorage.getItem("userID"),
             hostName: sessionStorage.getItem("username"),
             users: JSON.stringify(checkedUsers)
         };
+        // Send data to server to create a new group
         fetch("create/Group", {
             method: "POST",
             headers: {
@@ -523,9 +583,11 @@ const submitGroupChange = async () => {
             },
             body: JSON.stringify(data)
         });
-    } else if (sessionStorage.getItem("lobbyType") == "groupchat") {
+    } 
+    // If lobby type is groupchat
+    else if (sessionStorage.getItem("lobbyType") == "groupchat") {
+        // Filter checked users to remove existing members
         var filteredUsers = checkedUsers.filter(function (user) {
-            // Check if any blacklisted member has the same name as the user
             return !lobbyMembers.some(function (member) {
                 return member.clientName === user.name;
             });
@@ -535,6 +597,7 @@ const submitGroupChange = async () => {
             users: JSON.stringify(filteredUsers),
             groupName: sessionStorage.getItem("chatter")
         };
+        // Send data to server to alter the group
         fetch("alter/Group", {
             method: "POST",
             headers: {
@@ -542,6 +605,7 @@ const submitGroupChange = async () => {
             },
             body: JSON.stringify(data)
         });
+        // Reload the page
         window.location.reload()
     }
 };
@@ -563,8 +627,8 @@ function simulateRightClick(element, clientX, clientY) {
     element.dispatchEvent(event);
 }
 
-// Event listener to submit group changes
 
+// Event listener to submit group changes
 document.getElementsByClassName("submitAddGroup")[0].addEventListener("click", submitGroupChange);
 
 // Load contacts and friends
