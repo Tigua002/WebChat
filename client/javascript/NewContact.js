@@ -34,6 +34,7 @@ async function addContact(paramUser) {
     // sets user and password the user inputs
     const data = {
         user: requestedUser,
+        senderPFP: sessionStorage.getItem("PFP"),
         senderID: sessionStorage.getItem("userID"),
         senderName: sessionStorage.getItem("username")
     }
@@ -80,7 +81,9 @@ async function loadRequests() {
         accBtn.innerHTML = "&#10003;"
         decBtn.innerHTML = "&#88;"
         
-        accBtn.setAttribute("onClick", `acceptReq('${requests[i].sender}', '${requests[i].senderUsername}')`)
+        accBtn.addEventListener("click", () => {
+            acceptReq(requests[i].sender, requests[i].senderUsername, requests[i].senderPFP)
+        })
         decBtn.setAttribute("onClick", "declineReq('" + requests[i].sender + "')")
 
 
@@ -105,13 +108,15 @@ async function declineReq(sender) {
     window.location.reload()
 }
 
-async function acceptReq(sender, senderUsername) {
+async function acceptReq(sender, senderUsername, senderPFP) {
     // sets user and password the user inputs
     const data = {
         user: sessionStorage.getItem("username"),
         sender: sender,
         userID: sessionStorage.getItem("userID"),
-        senderName: senderUsername
+        senderName: senderUsername,
+        senderPFP: senderPFP,
+        userPFP: sessionStorage.getItem("PFP")
     }
     // sends the data to the database
     fetch("/accept/request", {

@@ -114,6 +114,7 @@ app.post("/delete/user/", function (req, res) {
 });
 app.post("/create/request/", function (req, res) {
     let user = req.body.user;
+    let senderPFP = req.body.senderPFP
     let senderID = req.body.senderID;
     let senderName = req.body.senderName;
 
@@ -125,7 +126,7 @@ app.post("/create/request/", function (req, res) {
             return;
         }
         let data = JSON.parse(JSON.stringify(result));
-        connection.execute('INSERT INTO requests (sender, reciever, senderUsername) VALUES (?, ?, ?)', [senderID, data[0].clientID, senderName]);
+        connection.execute('INSERT INTO requests (sender, reciever, senderUsername, senderPFP) VALUES (?, ?, ?, ?)', [senderID, data[0].clientID, senderName, senderPFP]);
         res.send("Request created successfully");
     });
 });
@@ -163,9 +164,10 @@ app.post("/accept/request/", function (req, res) {
     let user = req.body.user;
     let sender = req.body.sender;
     let senderName = req.body.senderName;
-
+    let senderPFP = req.body.senderPFP
+    let userPFP = req.body.userPFP
     // Use parameterized queries to insert friendship, delete request, and insert into lobbies
-    connection.execute('INSERT INTO friends (senderID, recieverID, senderName, recieverName) VALUES (?, ?, ?, ?)', [sender, userID, senderName, user], function(err, result) {
+    connection.execute('INSERT INTO friends (senderID, recieverID, senderName, recieverName, senderPFP, recieverPFP) VALUES (?, ?, ?, ?, ?, ?)', [sender, userID, senderName, user, senderPFP, userPFP], function(err, result) {
         if (err) {
             console.error("Error accepting request:", err);
             res.status(500).send("Error accepting request");
@@ -179,8 +181,8 @@ app.post("/accept/request/", function (req, res) {
     connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
         let data = JSON.parse(JSON.stringify(result))        
         connection.query('INSERT INTO lobbies (lobbyID, lobbyName) VALUES (?, ?)', [data.length + 1, `${user}TO${senderName}`]);
-        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (?, ?, ?, ?)', [data.length + 1,userID, user, `${user}TO${senderName}`]);
-        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName) VALUES (?, ?, ?, ?)', [data.length + 1,sender, senderName, `${user}TO${senderName}`]);
+        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, PFP) VALUES (?, ?, ?, ?, ?)', [data.length + 1,userID, user, `${user}TO${senderName}`, userPFP]);
+        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, PFP) VALUES (?, ?, ?, ?, ?)', [data.length + 1,sender, senderName, `${user}TO${senderName}`, senderPFP]);
     })
     res.send("Request accepted successfully");
 });
@@ -210,7 +212,7 @@ app.post("/rename/lobby/", function (req, res) {
     let username = req.body.username;
 
     // Use parameterized queries to update lobby name and related tables
-    connection.execute('INSERT INTO messages (lobbyID, message, sender, profile) VALUES (?, ?, ?, "STATUS", "systemAdmin.png")', [lobbyID, `${username} changed the name to '${lobbyName}'`, "STATUS"], function(err, result) {
+    connection.execute('INSERT INTO messages (lobbyID, message, sender, profile) VALUES (?, ?, ?,"systemAdmin.png")', [lobbyID, `${username} changed the name to '${lobbyName}'`, "STATUS"], function(err, result) {
         if (err) {
             console.error("Error renaming lobby:", err);
             res.status(500).send("Error renaming lobby");

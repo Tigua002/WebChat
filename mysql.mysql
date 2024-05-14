@@ -36,10 +36,12 @@ CREATE TABLE messages (lobbyID int,
  sender VARCHAR(255),
  messageID int PRIMARY KEY auto_increment,
  profile VARCHAR(255) DEFAULT 'catImage.png'
- clientID INT
+ clientID INT,
+ type VARCHAR(100) DEFAULT 'TEXT'
  );
 
 CREATE TABLE requests (sender VARCHAR(100),
  reciever varchar(100),
- senderUsername VARCHAR(100)
+ senderUsername VARCHAR(100),
+ senderPFP VARCHAR(255) DEFAULT 'catImage.png'
  );
