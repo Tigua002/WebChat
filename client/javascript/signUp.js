@@ -1,10 +1,14 @@
+// Prevent form submission by default
 var form = document.getElementsByClassName("formHolder")[0];
 function handleForm(event) { event.preventDefault(); }
 form.addEventListener('submit', handleForm);
+
+// Redirect to account page if user is already logged in
 if (sessionStorage.getItem("username") && sessionStorage.getItem("userID")) {
     window.location.assign("account.html")
 }
-// function for signing up
+
+// Function for signing up
 async function signup() {
     let brukernavn = document.getElementById("username").value
     let password = document.getElementById("password").value
@@ -19,30 +23,28 @@ async function signup() {
         alert("You are using invalid characters in your password!")
         return
     }
-    // getting all the users from the database
-    const res = await fetch("/find/user/" + brukernavn,
-        {
-            method: "GET"
-        })
-    // assinging the variable users to the database responce
+    // Request user from the database
+    const res = await fetch("/find/user/" + brukernavn, {
+        method: "GET"
+    })
+    // Get users from the response
     const users = await res.json()
-    // gets the user inputs
-    // for loop going throug all the users
-
+    // Check if username is already taken
     if (users.length > 0) {
         alert("This username is already taken")
         return
     }
+    // Check for reserved keywords in username
     if (brukernavn.includes("DELETED USER")) {
-        alert("don't use reserved keywords")
+        alert("Don't use reserved keywords")
         return
     }
-    // sets user and password the user inputs
+    // Set user and password from user inputs
     const data = {
         user: brukernavn,
         passord: password
     }
-    // sends the data to the database
+    // Send data to the database to create a new user
     fetch("/create/user", {
         method: "POST",
         headers: {
@@ -50,10 +52,11 @@ async function signup() {
         },
         body: JSON.stringify(data)
     })
-    // sending the user to the login page
+    // Redirect user to the login page
     window.location.assign("login.html")
 }
 
+// Function to check for invalid characters in the string
 function isValidString(inputString) {
     // Check for all different banned characters
     if (inputString.includes("*") || inputString.includes("'") || inputString.includes("`") || inputString.includes('"') || inputString.includes(`/`) || inputString.includes("(") || inputString.includes(")") || inputString.includes(" ")) {
