@@ -2,9 +2,7 @@ GIVE the user an option to send files
 Better UX/UI when changing username and password
 VIEW MULTIPLE CHATS at once
 Allow user to modify and delete message after it was sendt
-Modify database to include user PFP
 BLOCK USER
 REMOVE FRIEND
 NICKNAMES for friends
-Test PREVENT MySQL injections
 Maybe utilise some form of discord api's
