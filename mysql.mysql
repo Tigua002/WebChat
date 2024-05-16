@@ -35,7 +35,7 @@ CREATE TABLE messages (lobbyID int,
  message LONGTEXT,
  sender VARCHAR(255),
  messageID int PRIMARY KEY auto_increment,
- profile VARCHAR(255) DEFAULT 'catImage.png'
+ profile VARCHAR(255) DEFAULT 'catImage.png',
  clientID INT,
  type VARCHAR(100) DEFAULT 'TEXT'
  );

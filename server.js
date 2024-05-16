@@ -7,10 +7,34 @@ const fs = require('fs');
 const multer = require('multer');
 const upload = multer({ dest: 'client/userInput/profilePictures' });
 const mysql = require('mysql2');
+const nodemailer = require('nodemailer');
+require("dotenv").config()
 
 // Define the port to use
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));
+
+// Define mail settings
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: "smtp.gmail.com",
+    port: process.env.MAILERPORT,
+    secure: true,
+    auth: {
+        user: process.env.MAIL,
+        pass: process.env.MAILPASS
+    }
+});
+
+// function to send a mail
+const sendMail = async (transporter, mailOptions) => {
+    try {
+        await transporter.sendMail(mailOptions)
+        console.log('Email has been sent succesfully!');
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 // test databasen
 const connection = mysql.createConnection({
@@ -39,7 +63,23 @@ app.use(express.static("client"));
 // Serve the index.html file
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/client/index.html");
-});
+})
+
+app.post("/send/mail", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let message = req.body.message
+    let name = req.body.sender
+    let email = req.body.email
+    // definer "mailOptions"
+    var mailOptions = {
+      from: 'timurserve@gmail.com',
+      to: [process.env.USERMAIL],
+      subject: `INCOMING MAIL FROM ${name}: ${email}`,
+      text: message
+    };
+    // sender mailen
+    res.send(sendMail(transporter, mailOptions))
+  })
 
 app.post("/create/user/", function (req, res) {
     let user = req.body.user;
@@ -47,7 +87,7 @@ app.post("/create/user/", function (req, res) {
     let hiddenPass = md5(password);
 
     // Use parameterized query to insert user
-    connection.execute('INSERT INTO clients (username, password) VALUES (?, ?)', [user, hiddenPass], function(err, result) {
+    connection.execute('INSERT INTO clients (username, password) VALUES (?, ?)', [user, hiddenPass], function (err, result) {
         if (err) {
             console.error("Error creating user:", err);
             res.status(500).send("Error creating user");
@@ -62,7 +102,7 @@ app.post("/change/user/", function (req, res) {
     let oldUser = req.body.username;
 
     // Use parameterized query to update username
-    connection.execute('UPDATE clients SET username = ? WHERE clientID = ?', [newUser, userID], function(err, result) {
+    connection.execute('UPDATE clients SET username = ? WHERE clientID = ?', [newUser, userID], function (err, result) {
         if (err) {
             console.error("Error changing username:", err);
             res.status(500).send("Error changing username");
@@ -84,7 +124,7 @@ app.post("/change/password/", function (req, res) {
     let newHiddenPass = md5(newPass);
 
     // Use parameterized query to update password
-    connection.execute('UPDATE clients SET password = ? WHERE username = ? AND password = ?', [newHiddenPass, user, hiddenPass], function(err, result) {
+    connection.execute('UPDATE clients SET password = ? WHERE username = ? AND password = ?', [newHiddenPass, user, hiddenPass], function (err, result) {
         if (err) {
             console.error("Error changing password:", err);
             res.status(500).send("Error changing password");
@@ -98,7 +138,7 @@ app.post("/delete/user/", function (req, res) {
     let oldUser = req.body.username;
 
     // Use parameterized queries to update username, status, and related tables
-    connection.execute('UPDATE clients SET username = "DELETED USER", status = "DELETED" WHERE clientID = ?', [userID], function(err, result) {
+    connection.execute('UPDATE clients SET username = "DELETED USER", status = "DELETED" WHERE clientID = ?', [userID], function (err, result) {
         if (err) {
             console.error("Error deleting user:", err);
             res.status(500).send("Error deleting user");
@@ -119,7 +159,7 @@ app.post("/create/request/", function (req, res) {
     let senderName = req.body.senderName;
 
     // Use parameterized query to insert request
-    connection.execute('SELECT * FROM clients WHERE username = ?', [user], function(err, result) {
+    connection.execute('SELECT * FROM clients WHERE username = ?', [user], function (err, result) {
         if (err) {
             console.error("Error creating request:", err);
             res.status(500).send("Error creating request");
@@ -136,7 +176,7 @@ app.post("/save/bio/", function (req, res) {
     let status = req.body.status;
 
     // Use parameterized query to update bio and status
-    connection.execute('UPDATE clients SET BIO = ?, status = ? WHERE username = ?', [bio, status, user], function(err, result) {
+    connection.execute('UPDATE clients SET BIO = ?, status = ? WHERE username = ?', [bio, status, user], function (err, result) {
         if (err) {
             console.error("Error saving bio:", err);
             res.status(500).send("Error saving bio");
@@ -150,7 +190,7 @@ app.post("/decline/request/", function (req, res) {
     let sender = req.body.sender;
 
     // Use parameterized query to delete request
-    connection.execute('DELETE FROM requests WHERE reciever = ? AND sender = ?', [userID, sender], function(err, result) {
+    connection.execute('DELETE FROM requests WHERE reciever = ? AND sender = ?', [userID, sender], function (err, result) {
         if (err) {
             console.error("Error declining request:", err);
             res.status(500).send("Error declining request");
@@ -167,7 +207,7 @@ app.post("/accept/request/", function (req, res) {
     let senderPFP = req.body.senderPFP
     let userPFP = req.body.userPFP
     // Use parameterized queries to insert friendship, delete request, and insert into lobbies
-    connection.execute('INSERT INTO friends (senderID, recieverID, senderName, recieverName, senderPFP, recieverPFP) VALUES (?, ?, ?, ?, ?, ?)', [sender, userID, senderName, user, senderPFP, userPFP], function(err, result) {
+    connection.execute('INSERT INTO friends (senderID, recieverID, senderName, recieverName, senderPFP, recieverPFP) VALUES (?, ?, ?, ?, ?, ?)', [sender, userID, senderName, user, senderPFP, userPFP], function (err, result) {
         if (err) {
             console.error("Error accepting request:", err);
             res.status(500).send("Error accepting request");
@@ -179,10 +219,10 @@ app.post("/accept/request/", function (req, res) {
         // Insert into lobbies
     });
     connection.query(`SELECT * FROM lobbies `, function (err, result, fields) {
-        let data = JSON.parse(JSON.stringify(result))        
+        let data = JSON.parse(JSON.stringify(result))
         connection.query('INSERT INTO lobbies (lobbyID, lobbyName) VALUES (?, ?)', [data.length + 1, `${user}TO${senderName}`]);
-        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, PFP) VALUES (?, ?, ?, ?, ?)', [data.length + 1,userID, user, `${user}TO${senderName}`, userPFP]);
-        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, PFP) VALUES (?, ?, ?, ?, ?)', [data.length + 1,sender, senderName, `${user}TO${senderName}`, senderPFP]);
+        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, PFP) VALUES (?, ?, ?, ?, ?)', [data.length + 1, userID, user, `${user}TO${senderName}`, userPFP]);
+        connection.query('INSERT INTO connections (lobbyID, clientID, clientName, lobbyName, PFP) VALUES (?, ?, ?, ?, ?)', [data.length + 1, sender, senderName, `${user}TO${senderName}`, senderPFP]);
     })
     res.send("Request accepted successfully");
 });
@@ -197,7 +237,7 @@ app.post("/send/message/", function (req, res) {
     let pfp = req.body.pfp;
 
     // Use parameterized query to insert message
-    connection.execute('INSERT INTO messages (lobbyID, message, sender, clientID, profile) VALUES (?, ?, ?, ?, ?)', [lobbyID, message, sender, userID, pfp], function(err, result) {
+    connection.execute('INSERT INTO messages (lobbyID, message, sender, clientID, profile) VALUES (?, ?, ?, ?, ?)', [lobbyID, message, sender, userID, pfp], function (err, result) {
         if (err) {
             console.error("Error sending message:", err);
             res.status(500).send("Error sending message");
@@ -212,7 +252,7 @@ app.post("/rename/lobby/", function (req, res) {
     let username = req.body.username;
 
     // Use parameterized queries to update lobby name and related tables
-    connection.execute('INSERT INTO messages (lobbyID, message, sender, profile) VALUES (?, ?, ?,"systemAdmin.png")', [lobbyID, `${username} changed the name to '${lobbyName}'`, "STATUS"], function(err, result) {
+    connection.execute('INSERT INTO messages (lobbyID, message, sender, profile) VALUES (?, ?, ?,"systemAdmin.png")', [lobbyID, `${username} changed the name to '${lobbyName}'`, "STATUS"], function (err, result) {
         if (err) {
             console.error("Error renaming lobby:", err);
             res.status(500).send("Error renaming lobby");
@@ -229,7 +269,7 @@ app.post("/create/Group/", function (req, res) {
     let hostName = req.body.hostName;
 
     // Use parameterized query to get the length of lobbies and insert into lobbies and connections
-    connection.execute('SELECT MAX(lobbyID) + 1 AS newLobbyID FROM lobbies', function(err, result) {
+    connection.execute('SELECT MAX(lobbyID) + 1 AS newLobbyID FROM lobbies', function (err, result) {
         if (err) {
             console.error("Error creating group:", err);
             res.status(500).send("Error creating group");
@@ -277,7 +317,7 @@ app.post("/alter/Group/", function (req, res) {
 app.post("/delete/group/", function (req, res) {
     let lobbyID = req.body.lobbyID;
     // Use parameterized queries to update the lobby and connections
-    connection.execute('UPDATE lobbies SET type="DELETED" WHERE lobbyID = ?', [lobbyID], function(err, result) {
+    connection.execute('UPDATE lobbies SET type="DELETED" WHERE lobbyID = ?', [lobbyID], function (err, result) {
         if (err) {
             console.error("Error deleting group:", err);
             res.status(500).send("Error deleting group");
@@ -293,7 +333,7 @@ app.post("/leave/chat/", function (req, res) {
     let userID = req.body.userID;
 
     // Use parameterized query to delete user from the chat and insert a leaving message
-    connection.execute('DELETE FROM connections WHERE clientID = ? AND lobbyID = ?', [userID, lobbyID], function(err, result) {
+    connection.execute('DELETE FROM connections WHERE clientID = ? AND lobbyID = ?', [userID, lobbyID], function (err, result) {
         if (err) {
             console.error("Error leaving chat:", err);
             res.status(500).send("Error leaving chat");
@@ -310,7 +350,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
     let userID = req.body.userID;
     const date = new Date();
     const dateString = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}/${date.getHours()}/${date.getMinutes()}/${date.getSeconds()}/${date.getMilliseconds()}`;
-    
+
     const parts = req.file.originalname.split('.');
     const extension = parts[parts.length - 1];
     const customFilename = md5(dateString) + "." + extension;
@@ -354,7 +394,7 @@ app.get('/user/:a/:b', (req, res) => {
     let password = md5(req.params.b);
 
     // Use parameterized query to select user by username and password
-    connection.execute('SELECT * FROM clients WHERE username = ? AND password = ?', [req.params.a, password], function(err, result) {
+    connection.execute('SELECT * FROM clients WHERE username = ? AND password = ?', [req.params.a, password], function (err, result) {
         if (err) {
             console.error("Error retrieving user:", err);
             res.status(500).send("Error retrieving user");
@@ -366,7 +406,7 @@ app.get('/user/:a/:b', (req, res) => {
 });
 app.get('/find/user/:a', (req, res) => {
     // Use parameterized query to select user by username
-    connection.execute('SELECT * FROM clients WHERE username = ?', [req.params.a], function(err, result) {
+    connection.execute('SELECT * FROM clients WHERE username = ?', [req.params.a], function (err, result) {
         if (err) {
             console.error("Error finding user:", err);
             res.status(500).send("Error finding user");
@@ -378,7 +418,7 @@ app.get('/find/user/:a', (req, res) => {
 });
 app.get('/contacts/user/:a', (req, res) => {
     // Use parameterized query to select contacts by user ID
-    connection.execute('SELECT * FROM connections WHERE clientID = ?', [req.params.a], function(err, result) {
+    connection.execute('SELECT * FROM connections WHERE clientID = ?', [req.params.a], function (err, result) {
         if (err) {
             console.error("Error retrieving contacts:", err);
             res.status(500).send("Error retrieving contacts");
@@ -391,7 +431,7 @@ app.get('/contacts/user/:a', (req, res) => {
 
 app.get('/cont/message/:a', (req, res) => {
     // Use parameterized query to select messages by lobbyID
-    connection.execute('SELECT * FROM messages WHERE lobbyID = ?', [req.params.a], function(err, result) {
+    connection.execute('SELECT * FROM messages WHERE lobbyID = ?', [req.params.a], function (err, result) {
         if (err) {
             console.error("Error retrieving messages:", err);
             res.status(500).send("Error retrieving messages");
@@ -404,7 +444,7 @@ app.get('/cont/message/:a', (req, res) => {
 
 app.get('/get/requests/:a', (req, res) => {
     // Use parameterized query to select requests by receiver ID
-    connection.execute('SELECT * FROM requests WHERE reciever = ?', [req.params.a], function(err, result) {
+    connection.execute('SELECT * FROM requests WHERE reciever = ?', [req.params.a], function (err, result) {
         if (err) {
             console.error("Error retrieving requests:", err);
             res.status(500).send("Error retrieving requests");
@@ -417,7 +457,7 @@ app.get('/get/requests/:a', (req, res) => {
 
 app.get('/get/friends/:a', (req, res) => {
     // Use parameterized query to select friends by sender ID or receiver ID
-    connection.execute('SELECT * FROM friends WHERE senderID = ? OR recieverID = ?', [req.params.a, req.params.a], function(err, result) {
+    connection.execute('SELECT * FROM friends WHERE senderID = ? OR recieverID = ?', [req.params.a, req.params.a], function (err, result) {
         if (err) {
             console.error("Error retrieving friends:", err);
             res.status(500).send("Error retrieving friends");
@@ -430,7 +470,7 @@ app.get('/get/friends/:a', (req, res) => {
 
 app.get('/get/lobbyMembers/:a', (req, res) => {
     // Use parameterized query to select lobby members by lobbyID
-    connection.execute('SELECT * FROM connections WHERE lobbyID = ?', [req.params.a], function(err, result) {
+    connection.execute('SELECT * FROM connections WHERE lobbyID = ?', [req.params.a], function (err, result) {
         if (err) {
             console.error("Error retrieving lobby members:", err);
             res.status(500).send("Error retrieving lobby members");

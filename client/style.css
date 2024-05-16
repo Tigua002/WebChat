@@ -823,3 +823,82 @@ html::-webkit-scrollbar {
     transform: scale(1.05);
 }
 
+.kontaktInfoHolder {
+    flex-direction: row;
+    width: 80%;
+    padding-left: 15vw;
+    flex-wrap: wrap;
+    padding-bottom: 10vh;
+}
+.kontaktWrapper{
+    flex-wrap: wrap;
+    justify-content: right;
+    width: 100%;
+}
+.kontaktTitle {
+    font-size: 3vw;
+    color: #b86363;
+    margin: 3vw 4vw;
+    width: 50%;
+    padding: 1vw;
+}
+
+.emailInputs {
+    background-color: #2D3142;
+    color: #b86363;
+    border: none;
+    width: 40%;
+
+    margin: 2%;
+    margin-top: 0%;
+    border: gray 1px solid;
+    padding: 1%;
+}
+
+.emailInputs::placeholder {
+    color: #b86363;
+}
+.emailInputs:focus{
+    outline: none;
+    scale: 1.01;
+    border: black 1px solid;
+    color: #b86363;
+}
+.emailInputs::after,
+.emailInputs::before {
+    border: none;
+}
+
+.contactTelef {
+    width: 86.2%;
+}
+
+#EmailText {
+    width: 86.2%;
+    color: #b86363;
+    border: solid gray 1px;
+    padding: 1%;
+    margin: 0% 2%;
+    background-color: #2D3142;
+
+}
+#EmailText:focus{
+    outline: none;
+    scale: 1.01;
+    border: black 1px solid;
+}
+#EmailText::placeholder {
+    color: #b86363;
+}
+
+#EmailSend {
+    background: none;
+    font-size: 1.5vw;
+    border: solid gray 1px;
+    border-radius: 1vw;
+    padding: .6vw;
+    text-align: start;
+    margin: 2%;
+    color: #b86363;
+    cursor: pointer;
+}
