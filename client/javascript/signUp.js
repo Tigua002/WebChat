@@ -53,7 +53,7 @@ async function signup() {
         body: JSON.stringify(data)
     })
     // Redirect user to the login page
-    window.location.assign("login.html")
+    window.location.assign("Login.html")
 }
 
 // Function to check for invalid characters in the string

@@ -200,7 +200,7 @@ async function loadContacts() {
     contact[0].style.marginTop = "5vh"
 }
 
-var intervalActive = false
+var intervalActive = false;
 
 // Function to load messages for a given lobby
 async function loadMessages(lobbyID, lobbyName) {
@@ -258,6 +258,11 @@ async function loadMessages(lobbyID, lobbyName) {
         userInfoDiv.appendChild(sender)
         div.appendChild(message);
         document.getElementsByClassName("messages")[0].appendChild(div);
+        if (messages[i].sender == "STATUS") {
+            message.style.color = "#b86363"
+            sender.style.fontSize = "1.7vw"
+            sender.style.margin = ".5vw"
+        }
     }
     
     // Refresh messages every second
@@ -583,6 +588,8 @@ const submitGroupChange = async () => {
             },
             body: JSON.stringify(data)
         });
+        alert("sucess")
+        window.location.reload()
     } 
     // If lobby type is groupchat
     else if (sessionStorage.getItem("lobbyType") == "groupchat") {

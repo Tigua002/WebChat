@@ -74,7 +74,7 @@ app.post("/send/mail", function (req, res) {
     var mailOptions = {
       from: 'timurserve@gmail.com',
       to: [process.env.USERMAIL],
-      subject: `INCOMING MAIL FROM ${name}: ${email}`,
+      subject: `WEBCHAT MAIL FROM ${name}: ${email}`,
       text: message
     };
     // sender mailen

@@ -761,12 +761,21 @@ html::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     width: 60%;
+    height: 95vh;
+    overflow-y: scroll;
+}
+.friendsHolder::-webkit-scrollbar{
+    background: none;
+}
+.friendsHolder::-webkit-scrollbar-thumb{
+    background: #2D3142;
+    border-radius: 5vw;
 }
 
 .friendDiv {
     display: flex;
     align-items: center;
-    height: 20vh;
+    min-height: 20vh;
     overflow: hidden;
     background-color: #212227;
     width: 95%;

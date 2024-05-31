@@ -5,4 +5,4 @@ Allow user to modify and delete message after it was sendt
 BLOCK USER
 REMOVE FRIEND
 NICKNAMES for friends
-Maybe utilise some form of discord api's
+Maybe utilise some form of discord's api

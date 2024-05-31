@@ -23,7 +23,9 @@ type VARCHAR(255) DEFAULT 'direct',
 CREATE TABLE friends (senderID int,
  recieverID int,
  senderName VARCHAR(255),
- recieverName VARCHAR(255)
+ recieverName VARCHAR(255),
+ senderPFP VARCHAR(255),
+ recieverPFP VARCHAR(255)
  );
 
 CREATE TABLE lobbies (lobbyID int PRIMARY KEY auto_increment,
