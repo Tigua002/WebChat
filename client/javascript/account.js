@@ -173,6 +173,9 @@ async function checkPassword(password) {
 // Event listener for file upload form submission
 document.getElementById('fileForm').addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (document.getElementById('fileInput').files[0].size > (1024 * 1024)) {
+        
+    }
     const formData = new FormData();
     const fileInput = document.getElementById('fileInput').files[0];
     formData.append('file', fileInput);
