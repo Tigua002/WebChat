@@ -1,5 +1,8 @@
+NPM:
 npm i express body-parser path mysql2 md5 fs multer nodemailer dotenv
 
+
+MYSQL:
 CREATE TABLE clients (
 username VARCHAR(70),
  password VARCHAR(70), 
