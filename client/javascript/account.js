@@ -189,6 +189,7 @@ document.getElementById('fileForm').addEventListener('submit', async (event) => 
     if (response.ok) {
         alert("File uploaded successfully!");
         sessionStorage.setItem("PFP", data.filename);
+        window.location.reload()
     } else {
         console.error('Failed to upload file');
     }
