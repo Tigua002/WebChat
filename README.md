@@ -1,26 +1,30 @@
-NPM:
-npm i express body-parser path mysql2 md5 fs multer nodemailer dotenv
+NODE:
+ Insatallering: 
+  kjør "nodeBash.sh" filen i en ubuntu maskin.
+ NPM:
+  npm i express body-parser path mysql2 md5 fs multer nodemailer dotenv
 
 
 MYSQL:
+
 CREATE TABLE clients (
-username VARCHAR(70),
+ username VARCHAR(70),
  password VARCHAR(70), 
-lastChat VARCHAR(100), 
-BIO longtext, 
-status varchar(50) DEFAULT 'hidden', 
-clientID INT PRIMARY KEY auto_increment, 
-PFPlink VARCHAR(255) default 'catImage.png', 
-senderPFP VARCHAR(255) default 'catImage.png', 
-recieverPFP VARCHAR(255) default 'catImage.png'
+ lastChat VARCHAR(100), 
+ BIO longtext, 
+ status varchar(50) DEFAULT 'hidden', 
+ clientID INT PRIMARY KEY auto_increment, 
+ PFPlink VARCHAR(255) default 'catImage.png', 
+ senderPFP VARCHAR(255) default 'catImage.png', 
+ recieverPFP VARCHAR(255) default 'catImage.png'
 );
 
 CREATE TABLE connections (
-lobbyID int,
-clientID int,
-clientName VARCHAR(255),
-lobbyName VARCHAR(255),
-type VARCHAR(255) DEFAULT 'direct',
+ lobbyID int,
+ clientID int,
+ clientName VARCHAR(255),
+ lobbyName VARCHAR(255),
+ type VARCHAR(255) DEFAULT 'direct',
  PFP VARCHAR(255) DEFAULT 'catImage.png'
 );
 
