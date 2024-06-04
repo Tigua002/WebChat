@@ -13,4 +13,4 @@ n install lts
 wait 
 n use lts
 wait
-exit
+
