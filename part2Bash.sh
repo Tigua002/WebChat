@@ -12,6 +12,7 @@ wait
 mysql -e "
 create database webprot;
 use webprot;
+ALTER user 'root'@'localhost' IDENTIFIED by 'admin';
 CREATE TABLE clients (
 username VARCHAR(70),
  password VARCHAR(70), 
