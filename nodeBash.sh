@@ -1,13 +1,19 @@
 
 # oppdatere apt
-sudo su
-apt update && upgrade
+apt update -y
+wait
+apt upgrade -y
 wait 
 
-apt-get install npm
+#install node
+apt-get install npm -y
 wait 
 npm i -g n
 wait 
 n install lts
 wait 
 n use lts
+wait
+exit
+
+
