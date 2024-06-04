@@ -65,3 +65,4 @@ wait
 npm i -g pm2
 wait
 pm2 start server.js -n api
+pm2 restart server.js -n api
