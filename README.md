@@ -1,13 +1,8 @@
 NODE:
-
- Insatallering:
-
+ Instalering:
   kjør "nodeBash.sh" filen i en ubuntu maskin.
-  
- NPM:
- 
+ NPM: 
   npm i express body-parser path mysql2 md5 fs multer nodemailer dotenv
-
 
 MYSQL:
 
