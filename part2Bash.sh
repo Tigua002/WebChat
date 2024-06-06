@@ -68,3 +68,4 @@ pm2 start server.js -n api
 pm2 restart server.js -n api
 wait
 pm2 startup ubuntu
+echo "WebChat kjører nå på port 5000"
