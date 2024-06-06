@@ -473,11 +473,23 @@ html::-webkit-scrollbar {
     margin-left: 2vw;
     color: #888888;
 }
+.chatOption{
+    margin: 0%;
+    padding: 0%;
+    width: 3vw;
+
+}
 .userInfoMessage{
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin: .3vw;
-    
+
+}
+.messageSenderDiv{
+    display: flex;
+    align-items: center;
+    margin: .3vw;
 }
 .userMessagePFP{
     width: 2vw;
