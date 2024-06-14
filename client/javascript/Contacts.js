@@ -700,7 +700,7 @@ function swiper() {
         if (currentX > limit * 0.5) {
             slideable.style.transform = `translateX(${limit}px)`;
             console.log("EREEEEEEEEE");
-            slideable.style.width = "80%"
+            slideable.style.width = "70%"
         } else {
             slideable.style.transform = `translateX(0px)`;
             console.log("else");

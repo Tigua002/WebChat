@@ -1015,6 +1015,7 @@ html::-webkit-scrollbar {
         width: 100%;
         margin: 0%;
         padding: 0%;
+        touch-action: none;
      }
      .contactDiv{
         padding: 0%;
@@ -1022,6 +1023,7 @@ html::-webkit-scrollbar {
         height: 89vh;
         margin-top: 1vh;
         margin-bottom: 1vh;
+        touch-action: none;
      }
      .contactTitle{
         font-size: 2vw;
@@ -1036,12 +1038,15 @@ html::-webkit-scrollbar {
         padding: 0vw;
         margin: 0%;
         background-color: #131313;
+        touch-action: none;
      }
      .TextMessage{
         height: 10vh;
+        touch-action: none;
      }
      #personalMessage{
         height: 10vh;
+        touch-action: none;
      }
      #sendIcon{
         font-size: 10vw;
