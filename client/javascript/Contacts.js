@@ -233,11 +233,13 @@ async function loadMessages(lobbyID, lobbyName) {
     // Create message elements
     for (let i = 0; i < messages.length; i++) {
         let div = document.createElement("div");
+        let senderDiv = document.createElement("div")
         let sender = document.createElement("h1");
         let message = document.createElement("h1");
         let pfpDiv = document.createElement("div")
         let pfp = document.createElement("img")
         let userInfoDiv = document.createElement("div")
+        let messageOption = document.createElement("img")
         
         // Set attributes and content
         div.setAttribute("class", "message");
@@ -247,16 +249,33 @@ async function loadMessages(lobbyID, lobbyName) {
         sender.setAttribute("class", "messageSender");
         message.setAttribute("class", "messageText");
         pfp.setAttribute("src", "userInput/profilePictures/" + messages[i].profile)
-        
+        senderDiv.setAttribute("class", "messageSenderDiv")
+        messageOption.setAttribute("class", "chatOption")
+        messageOption.setAttribute("src", "bilder/icons8-three-dots-100.png")
         sender.innerHTML = messages[i].sender + ":";
         message.innerHTML = messages[i].message;
         
         // Append elements
         div.appendChild(userInfoDiv);
-        userInfoDiv.appendChild(pfpDiv)
+        userInfoDiv.appendChild(senderDiv)
+        senderDiv.appendChild(pfpDiv)
         pfpDiv.appendChild(pfp)
-        userInfoDiv.appendChild(sender)
+        senderDiv.appendChild(sender)
         div.appendChild(message);
+        userInfoDiv.appendChild(messageOption)
+        messageOption.addEventListener("click", async () => {
+            let messageID = messages[i].messageID
+            const data = {
+                ID: messageID
+            }
+            fetch("/delete/message/", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        })
         document.getElementsByClassName("messages")[0].appendChild(div);
         if (messages[i].sender == "STATUS") {
             message.style.color = "#b86363"

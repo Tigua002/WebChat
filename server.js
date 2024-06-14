@@ -45,12 +45,7 @@ const connection = mysql.createConnection({
 });
 
 // connecter til databasen
-connection.connect(function (err) {
-    if (err) {
-        console.error("Error connectiong to database: \n", err)
-    }
-    console.log("MySQL database connected");
-})
+connection.connect()
 // Middleware for parsing request bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -79,6 +74,14 @@ app.post("/send/mail", function (req, res) {
     };
     // sender mailen
     res.send(sendMail(transporter, mailOptions))
+  })
+
+  app.post("/delete/message", function (req, res) {
+    // skaffer user og passord fra data-en og gir dem en verdi
+    let messageID = req.body.ID
+    connection.execute("DELETE FROM MESSAGES WHERE messageID = ?", [messageID])
+
+
   })
 
 app.post("/create/user/", function (req, res) {
