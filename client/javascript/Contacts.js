@@ -1,5 +1,5 @@
 // Check if the user is logged in
-if (!sessionStorage.getItem("username") ) {
+if (!sessionStorage.getItem("username")) {
     // If not logged in, redirect to the login page
     window.location.assign("Login.html");
 }
@@ -94,7 +94,7 @@ async function loadContacts() {
                     titles[i].parentElement.style.backgroundColor = "#2D3142";
                 }
             }
-            
+
             // delete groupchat function
             // checks if the selected item is a groupchat
             if (event.target.getAttribute("key") == "groupchat") {
@@ -196,8 +196,7 @@ async function loadContacts() {
 
     // Add margins to the first and last contact
     let contact = document.getElementsByClassName("Contact")
-    contact[(contact.length - 1)].style.marginBottom = "30vh"
-    contact[0].style.marginTop = "5vh"
+    contact[0].classList.add("firstContact")
 }
 
 var intervalActive = false;
@@ -205,21 +204,22 @@ var intervalActive = false;
 // Function to load messages for a given lobby
 async function loadMessages(lobbyID, lobbyName) {
     // Clear existing messages
+
     document.getElementsByClassName("messages")[0].innerHTML = "";
-    
+
     // Request messages for the given lobby from the database
     const response = await fetch("/cont/message/" + lobbyID, {
         method: "GET"
     });
-    
+
     // Get messages from the response
     const messages = await response.json();
-    
+
     // Set session storage variables
     sessionStorage.setItem("messages", JSON.stringify(messages));
     sessionStorage.setItem("chatter", lobbyName);
     sessionStorage.setItem("lobby", lobbyID);
-    
+
     // Highlight selected contact
     let titles = document.getElementsByClassName("contactTitle");
     for (let i = 0; i < titles.length; i++) {
@@ -229,7 +229,7 @@ async function loadMessages(lobbyID, lobbyName) {
             titles[i].parentElement.style.backgroundColor = "#2D3142";
         }
     }
-    
+
     // Create message elements
     for (let i = 0; i < messages.length; i++) {
         let div = document.createElement("div");
@@ -240,7 +240,7 @@ async function loadMessages(lobbyID, lobbyName) {
         let pfp = document.createElement("img")
         let userInfoDiv = document.createElement("div")
         let messageOption = document.createElement("img")
-        
+
         // Set attributes and content
         div.setAttribute("class", "message");
         pfpDiv.setAttribute("class", "userMessagePFP");
@@ -254,7 +254,7 @@ async function loadMessages(lobbyID, lobbyName) {
         messageOption.setAttribute("src", "bilder/icons8-three-dots-100.png")
         sender.innerHTML = messages[i].sender + ":";
         message.innerHTML = messages[i].message;
-        
+
         // Append elements
         div.appendChild(userInfoDiv);
         userInfoDiv.appendChild(senderDiv)
@@ -283,44 +283,50 @@ async function loadMessages(lobbyID, lobbyName) {
             sender.style.margin = ".5vw"
         }
     }
-    
+
     // Refresh messages every second
     if (!intervalActive) {
         setInterval(newMessage, 1000);
         intervalActive = true
     }
-    
+
     // Create text message input
     document.getElementsByClassName("TextMessage")[0].innerHTML = `
     <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
-    <input id="sendIcon" type="submit" value="&#8593;" >
+    <input id="sendIcon" type="button" value="&#8593;">
     `;
-    
+
     // Add event listener for sending message
     let icon = document.getElementById("sendIcon");
     icon.addEventListener("click", () => {
         sendMessage(lobbyID);
     });
-    
+
     // Add event listener for "Enter" key to send message
-    document.getElementById('personalMessage').addEventListener('keydown', function(event) {
+    document.getElementById('personalMessage').addEventListener('keydown', function (event) {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); // Prevent default Enter behavior (new line)
             document.getElementById('sendIcon').click(); // Submit the form
         }
     });
+    if (window.innerWidth <= 600) {
+        console.log("hi");
+        document.getElementsByClassName("messageHolder")[0].style.width = "100%"
+        document.getElementsByClassName("messageHolder")[0].style.transform = "translate(0px)"
+        swiper()
+    }
 }
 
 // Function to send a message
 async function sendMessage(lobbyID) {
     // Get the message from the input field
     let TextMessage = document.getElementById("personalMessage").value;
-    
+
     // Check if the message is empty
     if (TextMessage == "") {
         return;
     }
-    
+
     // Prepare data to send to the server
     const data = {
         lobbyID: lobbyID,
@@ -329,7 +335,7 @@ async function sendMessage(lobbyID) {
         userID: sessionStorage.getItem("userID"),
         pfp: sessionStorage.getItem("PFP")
     };
-    
+
     // Send data to the server
     fetch("/send/message", {
         method: "POST",
@@ -338,7 +344,7 @@ async function sendMessage(lobbyID) {
         },
         body: JSON.stringify(data)
     });
-    
+
     // Clear the input field after sending the message
     document.getElementById("personalMessage").value = "";
 
@@ -369,7 +375,7 @@ async function newMessage() {
 
     // Get messages from the response
     const messages = await response.json();
-    
+
     // Check if there are new messages
     // If the new messages are the same as the previously stored messages, no action is needed
     if (JSON.stringify(messages) == sessionStorage.getItem("messages")) {
@@ -425,7 +431,7 @@ document.addEventListener("click", e => {
 document.getElementById("addUserMenu").addEventListener("click", () => {
     // Get the friend menu element
     let friendMenu = document.getElementsByClassName("friendsMenu")[0];
-    
+
     // Display the friend menu
     friendMenu.style.display = "flex";
 
@@ -439,7 +445,7 @@ document.getElementById("addUserMenu").addEventListener("click", () => {
 document.getElementById("menuItem1").addEventListener("click", async (event) => {
     // Hide the context menu
     event.target.parentElement.style.display = "none";
-    
+
     // Get the selected lobby div and its input field
     let divSelect = document.getElementById(sessionStorage.getItem("lobbyAltering"));
     let inputField = divSelect.getElementsByClassName("contactTitle")[0];
@@ -458,23 +464,23 @@ async function rename(event) {
     if (!sessionStorage.getItem("lobbyAltering")) {
         return;
     }
-    
+
     // Set input field to read-only
     event.target.setAttribute("readonly", "true");
 
     // Remove event listener for blur
     event.target.removeEventListener("blur", rename);
-    
+
     // Update session storage with the new lobby name
     sessionStorage.setItem("chatter", event.target.value);
-    
+
     // Prepare data for sending to the server
     const data = {
         lobbyID: sessionStorage.getItem("lobbyAltering"),
         lobbyName: event.target.value,
         username: sessionStorage.getItem("username")
     };
-    
+
     // Send data to the server to rename the lobby
     fetch("/rename/lobby", {
         method: "POST",
@@ -488,7 +494,7 @@ async function rename(event) {
     event.target.parentElement.removeEventListener("click", () => {
         loadMessages();
     });
-    
+
     // Reload the page to reflect the changes
     window.location.reload();
 }
@@ -506,7 +512,7 @@ const loadFriends = async () => {
     // Iterate through the user's friends
     for (let i = 0; i < friends.length; i++) {
         const friend = friends[i];
-        
+
         // Skip if friend is deleted
         if (friend.senderName == "DELETED USER" || friend.recieverName == "DELETED USER") {
             continue;
@@ -609,7 +615,7 @@ const submitGroupChange = async () => {
         });
         alert("sucess")
         window.location.reload()
-    } 
+    }
     // If lobby type is groupchat
     else if (sessionStorage.getItem("lobbyType") == "groupchat") {
         // Filter checked users to remove existing members
@@ -652,7 +658,57 @@ function simulateRightClick(element, clientX, clientY) {
     // Dispatch the event on the specified element
     element.dispatchEvent(event);
 }
+const screenWidth = window.innerWidth;
+const leftLimit = screenWidth * 0.01
+let startX;
+let currentX;
+let initialX = 0;
+let isDragging = false;
+const slideable = document.getElementsByClassName("messageHolder")[0]
+const limit = screenWidth * 0.3; // 20% of the screen width
+if (window.innerWidth <= 600) {
 
+    slideable.style.transform = `translateX(${limit}px)`;
+}
+function swiper() {
+    slideable.addEventListener("touchstart", function (event) {
+        startX = event.touches[0].clientX;
+        isDragging = true;
+        initialX = currentX || 0;
+    });
+
+    slideable.addEventListener("touchmove", function (event) {
+        if (!isDragging) return;
+        currentX = event.touches[0].clientX - startX + initialX;
+
+
+        // Limit the movement to 20% of the screen width
+        if (currentX > limit) {
+            currentX = limit;
+        } else if (currentX < leftLimit) {
+            console.log("active");
+            currentX = 0
+        }
+
+        slideable.style.transform = `translateX(${currentX}px)`;
+    });
+
+    slideable.addEventListener("touchend", function (event) {
+        isDragging = false;
+
+        // Check if the movement is within 20% of the screen width
+        if (currentX > limit * 0.5) {
+            slideable.style.transform = `translateX(${limit}px)`;
+            console.log("EREEEEEEEEE");
+            slideable.style.width = "80%"
+        } else {
+            slideable.style.transform = `translateX(0px)`;
+            console.log("else");
+            slideable.style.width = "100%"
+        }
+    });
+
+}
 
 // Event listener to submit group changes
 document.getElementsByClassName("submitAddGroup")[0].addEventListener("click", submitGroupChange);

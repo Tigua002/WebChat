@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="preventOverflow">
 
 <head>
     <meta charset="UTF-8">
@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body id="preventOverflow">
+<body class="preventOverflow">
     <div class="header">
         <div class="navBar">
-            <a href="Contacts.html" class="navLink" style="margin-top: 2vw;">
+            <a href="Contacts.html" class="navLink">
                 <img src="bilder/icons8-contacts-250.png" alt="" class="navImg">
             </a>
             <a href="Login.html" class="navLink">
@@ -24,7 +24,7 @@
                 <img src="bilder/icons8-about-250.png" alt="" class="navImg">
             </a>
         </div>
-        <p style="color: white; font-size: .7vw; margin: 5%; padding: 0%;">Icons By <a style="color: white;" target="_blank" href="https://icons8.com/">Icons8</a></p>
+        <p class="credits">Icons By <a style="color: white;" target="_blank" href="https://icons8.com/">Icons8</a></p>
     </div>
     <div class="ContactsHolder">
         <div class="contactDiv">
@@ -34,11 +34,11 @@
                 <h1 class="friendOption">&#x22EF;</h1>
             </div> -->
         </div>
-        <div class="messageHolder">
+        <div class="messageHolder" style="padding: 0%;">
             <div class="TextMessage">
                 <!-- <img src="bilder/icons8-attach-file-100.png" alt="attach file" class="FileAttachment"> -->
                 <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
-                <input id="sendIcon" type="button" value="&#8593;" >
+                <input id="sendIcon" type="button" value="&#8593;">
             </div>
             <div class="messages">
                 <div class="message">
@@ -46,7 +46,8 @@
                         <div class="messageSenderDiv">
 
                             <div class="userMessagePFP">
-                                <img class="friendProfilePic" src="userInput/profilePictures/catImage.png" alt="profile pictures">
+                                <img class="friendProfilePic" src="userInput/profilePictures/catImage.png"
+                                    alt="profile pictures">
                             </div>
                             <h1 class="messageSender">Timur:</h1>
                         </div>
@@ -58,7 +59,6 @@
             </div>
         </div>
     </div>
-
     <div id="customContextMenu" class="customMenu" style="display: none;">
         <div class="customMenuItem" id="addUserMenu">ADD USER</div>
         <div class="customMenuItem" id="menuItem1">RENAME</div>
@@ -74,7 +74,58 @@
 
 
 </body>
+<!-- <script>
+
+    const slideable = document.getElementsByClassName("messageHolder")[0]
+    const screenWidth = window.innerWidth;
+    const limit = screenWidth * 0.2; // 20% of the screen width
+    const leftLimit = screenWidth * 0.01
+    slideable.style.transform = `translateX(${limit}px)`;
+    let startX;
+    let currentX;
+    let initialX = 0;
+    let isDragging = false;
+    console.log(limit);
+    slideable.addEventListener("touchstart", function(event) {
+        startX = event.touches[0].clientX;
+        isDragging = true;
+        initialX = currentX || 0;
+    });
+
+    slideable.addEventListener("touchmove", function(event) {
+        if (!isDragging) return;
+        currentX = event.touches[0].clientX - startX + initialX;
+
+
+        // Limit the movement to 20% of the screen width
+        if (currentX > limit) {
+            currentX = limit;
+        } else if (currentX < leftLimit) {
+            console.log("active");
+            currentX = 0
+        }
+
+        slideable.style.transform = `translateX(${currentX}px)`;
+    });
+
+    slideable.addEventListener("touchend", function(event) {
+        isDragging = false;
+
+        // Check if the movement is within 20% of the screen width
+        if (currentX > limit * 0.5) {
+            slideable.style.transform = `translateX(${limit}px)`;
+            console.log("EREEEEEEEEE");
+        } else {
+            slideable.style.transform = `translateX(0px)`;
+            console.log("else");
+        }
+    });
+
+
+    
+</script> -->
 <script src="javascript/Contacts.js">
+
 
 </script>
 

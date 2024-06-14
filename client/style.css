@@ -7,7 +7,7 @@ body {
 #preventOverflow {
     overflow-y: hidden;
     height: 100vh;
-    
+
 }
 
 html::-webkit-scrollbar {
@@ -16,7 +16,6 @@ html::-webkit-scrollbar {
 
 .header {
     display: flex;
-
     flex-direction: column;
     height: 100vh;
     width: 5vw;
@@ -46,10 +45,12 @@ html::-webkit-scrollbar {
     width: 100%;
     padding: 1vw;
 }
-.navLink:hover{
+
+.navLink:hover {
     background-color: #888888;
 }
-.navImg{
+
+.navImg {
     width: 100%;
 }
 
@@ -148,7 +149,8 @@ html::-webkit-scrollbar {
     align-items: center;
     flex-direction: column;
 }
-.accountSettings{
+
+.accountSettings {
     display: flex;
     width: 50%;
     justify-content: center;
@@ -156,7 +158,8 @@ html::-webkit-scrollbar {
     flex-direction: row;
     padding-top: 3vh;
 }
-.DiscoverSettings{
+
+.DiscoverSettings {
     display: flex;
     width: 80%;
     justify-content: space-around;
@@ -164,10 +167,12 @@ html::-webkit-scrollbar {
     flex-direction: column;
     height: 80vh;
 }
+
 .accountTitle {
     margin-top: 5vw;
     color: rgb(199, 199, 199);
 }
+
 .DiscTitle {
     margin-top: 10vh;
     color: rgb(199, 199, 199);
@@ -178,9 +183,11 @@ html::-webkit-scrollbar {
     text-align: center;
     color: rgb(199, 199, 199);
 }
-#centerAccount{
+
+#centerAccount {
     margin: 0vh 15vw;
 }
+
 .accountBtns {
     margin-top: 1vw;
     padding: 10px 15px;
@@ -193,21 +200,25 @@ html::-webkit-scrollbar {
     width: 10vw;
     height: 7vh;
 }
-.accountBtns:hover{
+
+.accountBtns:hover {
     background-color: #2D3142;
 }
-.accountBtns:focus{
+
+.accountBtns:focus {
     border: black 1px solid;
     outline: none;
     background-color: #2D3142;
 }
-.accountPFP{
+
+.accountPFP {
     margin-top: 5vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
+
 .accountPFPDiv {
     width: 12vw;
     height: 12vw;
@@ -215,6 +226,7 @@ html::-webkit-scrollbar {
     border-radius: 50%;
     cursor: pointer;
 }
+
 /* CSS */
 #customFileInput {
     display: inline-block;
@@ -225,15 +237,19 @@ html::-webkit-scrollbar {
     cursor: pointer;
     margin-top: 1vw;
 }
-#customFileInput:hover{
+
+#customFileInput:hover {
     background-color: #2D3142;
 }
-#customFileInput:focus, #submitPFPChange:focus{
+
+#customFileInput:focus,
+#submitPFPChange:focus {
     background-color: #2D3142;
     border: black 1px solid;
     outline: none;
 }
-#submitPFPChange{
+
+#submitPFPChange {
     margin-top: 1vw;
     padding: 10px 15px;
     background-color: #888888;
@@ -242,7 +258,8 @@ html::-webkit-scrollbar {
     cursor: pointer;
     border: none;
 }
-#submitPFPChange:hover{
+
+#submitPFPChange:hover {
     background-color: #2D3142;
 }
 
@@ -252,7 +269,8 @@ html::-webkit-scrollbar {
     object-fit: cover;
     border-radius: 50%;
 }
-#fileForm{
+
+#fileForm {
     display: flex;
     flex-direction: column;
 }
@@ -391,8 +409,11 @@ html::-webkit-scrollbar {
     flex-direction: row;
     max-height: 10vh;
     align-items: center;
+    margin: .5vw 0vw;
 }
-
+.firstContact{
+    margin-top: 2vw;
+}
 .contactDiv::-webkit-scrollbar {
     width: 0%;
     display: none;
@@ -473,25 +494,29 @@ html::-webkit-scrollbar {
     margin-left: 2vw;
     color: #888888;
 }
-.chatOption{
+
+.chatOption {
     margin: 0%;
     padding: 0%;
     width: 2vw;
 
 }
-.userInfoMessage{
+
+.userInfoMessage {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: .3vw;
     cursor: pointer;
 }
-.messageSenderDiv{
+
+.messageSenderDiv {
     display: flex;
     align-items: center;
     margin: .3vw;
 }
-.userMessagePFP{
+
+.userMessagePFP {
     width: 2vw;
     height: 2vw;
 }
@@ -512,7 +537,7 @@ html::-webkit-scrollbar {
     width: 85%;
     margin: .5vw 1vw .5vw 2vw;
     resize: none;
-    
+
 }
 
 #sendIcon {
@@ -523,11 +548,13 @@ html::-webkit-scrollbar {
     font-size: 4vw;
     margin: .5vw;
 }
-.FileAttachment{
+
+.FileAttachment {
     width: 5vw;
     margin: 1vw;
     padding: 0%;
 }
+
 #userBio {
     background: #2D3142;
     border: none;
@@ -537,7 +564,8 @@ html::-webkit-scrollbar {
     width: 50%;
     resize: none;
 }
-#userBio::-webkit-scrollbar{
+
+#userBio::-webkit-scrollbar {
     display: none;
 }
 
@@ -597,10 +625,12 @@ html::-webkit-scrollbar {
 #checked:checked+label::before {
     background-color: rgb(89, 89, 89);
 }
-#checked:focus + label{
+
+#checked:focus+label {
     border: solid black 2px;
     border-radius: 3em;
 }
+
 .accountUnderText {
     color: #888888;
     position: fixed;
@@ -612,6 +642,7 @@ html::-webkit-scrollbar {
     pointer-events: none;
     z-index: 99;
 }
+
 #discoverBtn {
     text-align: center;
     border: solid #fff 1px;
@@ -682,11 +713,13 @@ html::-webkit-scrollbar {
     padding: 8px 12px;
     cursor: pointer;
 }
-.customMenuItem:hover{
+
+.customMenuItem:hover {
     background-color: #888888;
     color: #2D3142;
 }
-.submitAddGroup{
+
+.submitAddGroup {
     margin: 1vw auto 1vw auto;
     background-color: #888888;
     color: #2D3142;
@@ -695,10 +728,12 @@ html::-webkit-scrollbar {
     font-size: 1.5vw;
     cursor: pointer;
 }
-.submitAddGroup:hover{
+
+.submitAddGroup:hover {
     background-color: #2D3142;
     color: #888888;
 }
+
 #friendMenu {
     position: fixed;
     background-color: #212227;
@@ -763,11 +798,12 @@ html::-webkit-scrollbar {
     opacity: 1;
 }
 
-.friendPageHolder{
+.friendPageHolder {
     display: flex;
     padding-left: 5vw;
     padding-top: 5vh;
 }
+
 .friendsHolder {
     color: #d3d3d3;
     display: flex;
@@ -776,10 +812,12 @@ html::-webkit-scrollbar {
     height: 95vh;
     overflow-y: scroll;
 }
-.friendsHolder::-webkit-scrollbar{
+
+.friendsHolder::-webkit-scrollbar {
     background: none;
 }
-.friendsHolder::-webkit-scrollbar-thumb{
+
+.friendsHolder::-webkit-scrollbar-thumb {
     background: #2D3142;
     border-radius: 5vw;
 }
@@ -794,9 +832,11 @@ html::-webkit-scrollbar {
     padding-left: 1vw;
     border: solid #888888 1px;
 }
-.friendDiv:hover{
+
+.friendDiv:hover {
     background-color: #b86363;
 }
+
 .friendPFPDiv {
     width: 12vh;
     height: 12vh;
@@ -805,6 +845,7 @@ html::-webkit-scrollbar {
     margin-right: 2vw;
     cursor: pointer;
 }
+
 .friendProfilePic {
     width: 100%;
     height: 100%;
@@ -812,22 +853,27 @@ html::-webkit-scrollbar {
     border-radius: 50%;
 
 }
-.friendName{
+
+.friendName {
     font-size: 3.5vw;
     cursor: pointer;
 }
-.friendName:hover{
+
+.friendName:hover {
     transform: scale(1.05);
 }
-.friendPFPDiv:hover{
+
+.friendPFPDiv:hover {
     transform: scale(1.05);
 }
-.friendLinkHolder{
+
+.friendLinkHolder {
     width: 40%;
     display: flex;
     justify-content: center;
 }
-.friendsLink{
+
+.friendsLink {
     text-decoration: none;
     color: white;
     font-size: 2vw;
@@ -840,7 +886,8 @@ html::-webkit-scrollbar {
     background-color: #888888;
     border-radius: 3vw;
 }
-.friendsLink:hover{
+
+.friendsLink:hover {
     transform: scale(1.05);
 }
 
@@ -851,11 +898,13 @@ html::-webkit-scrollbar {
     flex-wrap: wrap;
     padding-bottom: 10vh;
 }
-.kontaktWrapper{
+
+.kontaktWrapper {
     flex-wrap: wrap;
     justify-content: right;
     width: 100%;
 }
+
 .kontaktTitle {
     font-size: 3vw;
     color: #b86363;
@@ -879,12 +928,14 @@ html::-webkit-scrollbar {
 .emailInputs::placeholder {
     color: #b86363;
 }
-.emailInputs:focus{
+
+.emailInputs:focus {
     outline: none;
     scale: 1.01;
     border: black 1px solid;
     color: #b86363;
 }
+
 .emailInputs::after,
 .emailInputs::before {
     border: none;
@@ -903,11 +954,13 @@ html::-webkit-scrollbar {
     background-color: #2D3142;
 
 }
-#EmailText:focus{
+
+#EmailText:focus {
     outline: none;
     scale: 1.01;
     border: black 1px solid;
 }
+
 #EmailText::placeholder {
     color: #b86363;
 }
@@ -922,4 +975,86 @@ html::-webkit-scrollbar {
     margin: 2%;
     color: #b86363;
     cursor: pointer;
+}
+
+.credits {
+    color: white;
+    font-size: .7vw;
+    margin: 5%;
+    padding: 0%;
+}
+
+@media screen and (max-width: 600px) {
+    .header {
+        padding-top: 1vh;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 10vh;
+        flex-direction: column;
+        align-items: center;
+    }
+    .navBar {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+    .navLink {
+        width: 10vw;
+        height: 10vw;
+        border-radius: 50%;
+        padding: 2vw;
+    }
+    .credits{
+        font-size: 3vw;
+        margin: 0%;
+        margin-top: 1vw;
+    }
+
+     .ContactsHolder{
+        width: 100%;
+        margin: 0%;
+        padding: 0%;
+     }
+     .contactDiv{
+        padding: 0%;
+        width: 30%;
+        height: 89vh;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+     }
+     .contactTitle{
+        font-size: 2vw;
+     }
+     .firstContact{
+        margin: 0%;
+     }
+     .messageHolder{
+        position: absolute;
+        height: 89vh;
+        width: 70%;
+        padding: 0vw;
+        margin: 0%;
+        background-color: #131313;
+     }
+     .TextMessage{
+        height: 10vh;
+     }
+     #personalMessage{
+        height: 10vh;
+     }
+     #sendIcon{
+        font-size: 10vw;
+     }
+     .messageText{
+        font-size: 3vw;
+     }
+     .messageSender{
+        font-size: 3.5vw;
+     }
+
+     .userMessagePFP{
+        width: 2vh;
+        height: 2vh;
+     }
 }
