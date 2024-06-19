@@ -6,6 +6,27 @@ if (!sessionStorage.getItem("username")) {
 document.getElementsByClassName("navLink")[0].style.backgroundColor = "#b86363"
 
 
+// Create a function to adjust the viewport meta tag
+function adjustViewportZoom(enableZoom) {
+    let viewport = document.querySelector("meta[name=viewport]");
+    if (enableZoom) {
+        viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes";
+    } else {
+        viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+    }
+}
+
+// Add event listeners to input fields
+document.querySelectorAll('input, textarea, select').forEach(element => {
+    element.addEventListener('focus', function () {
+        adjustViewportZoom(false);
+    });
+
+    element.addEventListener('blur', function () {
+        adjustViewportZoom(true);
+    });
+});
+
 
 // Function to load contacts
 async function loadContacts() {
