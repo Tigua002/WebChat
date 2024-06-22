@@ -349,8 +349,8 @@ async function loadMessages(lobbyID, lobbyName) {
                 console.log("CLICKED");
                 slideable = document.getElementsByClassName("messageHolder")[0]
                 slideable.style.transition = ".1s ease-in"
-                if (Contopen) {
-                    Contopen = false
+                if (ContClosed) {
+                    ContClosed = false
                     slideable.style.transform = `translateX(${limit}px)`;
                     slideable.style.width = "70%"
                     document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
@@ -363,7 +363,7 @@ async function loadMessages(lobbyID, lobbyName) {
                     document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "auto"
                     currentX = 0
                 } else {
-                    Contopen = true
+                    ContClosed = true
                     slideable.style.transition = ".1s ease-in"
                     document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
                     console.log("Arrow closed");
@@ -377,13 +377,15 @@ async function loadMessages(lobbyID, lobbyName) {
                 }
             })
 
-        }document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "none"
+        }
+        document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "none"
         console.log("update");
         for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
             const element = document.getElementsByClassName("Contact")[i];
             element.style.pointerEvents = "none"
         }
         
+        ContClosed = true
     }
 }
 
@@ -729,7 +731,7 @@ function simulateRightClick(element, clientX, clientY) {
     element.dispatchEvent(event);
 }
 const screenWidth = window.innerWidth;
-let Contopen = true;
+let ContClosed = true;
 let startX;
 let currentX;
 let initialX = 0;
@@ -771,11 +773,11 @@ function swiper() {
         if (currentX < 0) {
             let slideWidth = 100 - ((117 + currentX)/4)
             slideable.style.width = slideWidth + "%"
-            Contopen = true
+            ContClosed = true
             if (slideWidth > 100) {
                 slideable.style.width = "100%"
                 console.log("flipepd");
-                Contopen = true
+                ContClosed = true
                 document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
                 
             }
@@ -787,7 +789,7 @@ function swiper() {
                 
             }
         } else {
-            Contopen = false
+            ContClosed = false
             document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
 
         }
@@ -798,13 +800,12 @@ function swiper() {
     slideable.addEventListener("touchend", function (event) {
         slideable.style.transition = "none"
         isDragging = false;
-
+        console.log(ContClosed);
         // Check if the movement is within 20% of the screen width
-        if (!Contopen) {
+        if (!ContClosed) {
             document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
             slideable.style.transform = `translateX(${limit}px)`;
             slideable.style.width = "70%"
-            console.log("moved");
             for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
                 const element = document.getElementsByClassName("Contact")[i];
                 
@@ -812,7 +813,7 @@ function swiper() {
             }
             document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "auto"
             currentX = 0
-        } else if (Contopen) {document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
+        } else if (ContClosed) {document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
             slideable.style.transform = `translateX(0px)`
             slideable.style.width = "100%"
 
