@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, ser-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>WebChat || Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -34,7 +34,7 @@
                 <h1 class="friendOption">&#x22EF;</h1>
             </div> -->
         </div>
-        <div class="messageHolder" style="padding: 0%;">
+        <div class="messageHolder">
             <div class="TextMessage">
                 <!-- <img src="bilder/icons8-attach-file-100.png" alt="attach file" class="FileAttachment"> -->
                 <textarea id="personalMessage" cols="30" rows="10" placeholder="Type your message here:"></textarea>
@@ -57,6 +57,10 @@
                 </div>
 
             </div>
+            <div class="closeArrow">
+                <h1 class="Arrow">&#8592;</h1>
+
+            </div>
         </div>
     </div>
     <div id="customContextMenu" class="customMenu" style="display: none;">
@@ -74,56 +78,6 @@
 
 
 </body>
-<!-- <script>
-
-    const slideable = document.getElementsByClassName("messageHolder")[0]
-    const screenWidth = window.innerWidth;
-    const limit = screenWidth * 0.2; // 20% of the screen width
-    const leftLimit = screenWidth * 0.01
-    slideable.style.transform = `translateX(${limit}px)`;
-    let startX;
-    let currentX;
-    let initialX = 0;
-    let isDragging = false;
-    console.log(limit);
-    slideable.addEventListener("touchstart", function(event) {
-        startX = event.touches[0].clientX;
-        isDragging = true;
-        initialX = currentX || 0;
-    });
-
-    slideable.addEventListener("touchmove", function(event) {
-        if (!isDragging) return;
-        currentX = event.touches[0].clientX - startX + initialX;
-
-
-        // Limit the movement to 20% of the screen width
-        if (currentX > limit) {
-            currentX = limit;
-        } else if (currentX < leftLimit) {
-            console.log("active");
-            currentX = 0
-        }
-
-        slideable.style.transform = `translateX(${currentX}px)`;
-    });
-
-    slideable.addEventListener("touchend", function(event) {
-        isDragging = false;
-
-        // Check if the movement is within 20% of the screen width
-        if (currentX > limit * 0.5) {
-            slideable.style.transform = `translateX(${limit}px)`;
-            console.log("EREEEEEEEEE");
-        } else {
-            slideable.style.transform = `translateX(0px)`;
-            console.log("else");
-        }
-    });
-
-
-    
-</script> -->
 <script src="javascript/Contacts.js">
 
 

@@ -221,7 +221,7 @@ async function loadContacts() {
 }
 
 var intervalActive = false;
-
+let firstRun = true
 // Function to load messages for a given lobby
 async function loadMessages(lobbyID, lobbyName) {
     // Clear existing messages
@@ -331,10 +331,59 @@ async function loadMessages(lobbyID, lobbyName) {
         }
     });
     if (window.innerWidth <= 600) {
-        console.log("hi");
+        document.getElementsByClassName("messageHolder")[0].style.transition = ".1s ease-in"
+        document.getElementsByClassName("messageHolder")[0].style.transform = `translateX(0px)`
         document.getElementsByClassName("messageHolder")[0].style.width = "100%"
-        document.getElementsByClassName("messageHolder")[0].style.transform = "translate(0px)"
-        swiper()
+        document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
+        document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "none"
+        for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
+            const element = document.getElementsByClassName("Contact")[i];
+            
+            element.style.pointerEvents = "none"
+        }
+        
+        if (firstRun) {
+            swiper()
+            firstRun = false
+            document.getElementsByClassName("closeArrow")[0].addEventListener("click", (e) => {
+                console.log("CLICKED");
+                slideable = document.getElementsByClassName("messageHolder")[0]
+                slideable.style.transition = ".1s ease-in"
+                if (Contopen) {
+                    Contopen = false
+                    slideable.style.transform = `translateX(${limit}px)`;
+                    slideable.style.width = "70%"
+                    document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
+                    console.log("arrow Moved");
+                    for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
+                        const element = document.getElementsByClassName("Contact")[i];
+                        
+                        element.style.pointerEvents = "visibleFill"
+                    }
+                    document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "auto"
+                    currentX = 0
+                } else {
+                    Contopen = true
+                    slideable.style.transition = ".1s ease-in"
+                    document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
+                    console.log("Arrow closed");
+                    document.getElementsByClassName("messageHolder")[0].style.transform = `translateX(0px)`
+                    document.getElementsByClassName("messageHolder")[0].style.width = "100%" 
+                    
+                    for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
+                        const element = document.getElementsByClassName("Contact")[i];
+                        element.style.pointerEvents = "none"
+                    }
+                }
+            })
+
+        }document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "none"
+        console.log("update");
+        for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
+            const element = document.getElementsByClassName("Contact")[i];
+            element.style.pointerEvents = "none"
+        }
+        
     }
 }
 
@@ -680,12 +729,12 @@ function simulateRightClick(element, clientX, clientY) {
     element.dispatchEvent(event);
 }
 const screenWidth = window.innerWidth;
-const leftLimit = screenWidth * 0.01
+let Contopen = true;
 let startX;
 let currentX;
 let initialX = 0;
 let isDragging = false;
-const slideable = document.getElementsByClassName("messageHolder")[0]
+let slideable = document.getElementsByClassName("messageHolder")[0]
 const limit = screenWidth * 0.3; // 20% of the screen width
 if (window.innerWidth <= 600) {
 
@@ -693,39 +742,88 @@ if (window.innerWidth <= 600) {
 }
 function swiper() {
     slideable.addEventListener("touchstart", function (event) {
+        console.log("track");
+        slideable.style.transition = "none"
         startX = event.touches[0].clientX;
         isDragging = true;
         initialX = currentX || 0;
     });
 
     slideable.addEventListener("touchmove", function (event) {
+        slideable.style.transition = "none"
         if (!isDragging) return;
         currentX = event.touches[0].clientX - startX + initialX;
-
-
+        let transalte = parseFloat(slideable.style.transform.replace("translateX(", "").replace("px)", ""))
+        if (currentX < 10 && currentX > -10) {
+            return
+        }
         // Limit the movement to 20% of the screen width
+
+
         if (currentX > limit) {
             currentX = limit;
-        } else if (currentX < leftLimit) {
-            console.log("active");
-            currentX = 0
         }
 
         slideable.style.transform = `translateX(${currentX}px)`;
+        slideable.style.width = (100 - (currentX/4)) + "%"
+
+       
+        if (currentX < 0) {
+            let slideWidth = 100 - ((117 + currentX)/4)
+            slideable.style.width = slideWidth + "%"
+            Contopen = true
+            if (slideWidth > 100) {
+                slideable.style.width = "100%"
+                console.log("flipepd");
+                Contopen = true
+                document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
+                
+            }
+            
+            slideable.style.transform = `translateX(${117 + currentX}px)`;
+            if (currentX < -117) {
+                slideable.style.transform = `translateX(0px)`;
+                
+                
+            }
+        } else {
+            Contopen = false
+            document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
+
+        }
+        
+
     });
 
     slideable.addEventListener("touchend", function (event) {
+        slideable.style.transition = "none"
         isDragging = false;
 
         // Check if the movement is within 20% of the screen width
-        if (currentX > limit * 0.5) {
+        if (!Contopen) {
+            document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
             slideable.style.transform = `translateX(${limit}px)`;
-            console.log("EREEEEEEEEE");
             slideable.style.width = "70%"
-        } else {
-            slideable.style.transform = `translateX(0px)`;
-            console.log("else");
+            console.log("moved");
+            for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
+                const element = document.getElementsByClassName("Contact")[i];
+                
+                element.style.pointerEvents = "auto"
+            }
+            document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "auto"
+            currentX = 0
+        } else if (Contopen) {document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
+            slideable.style.transform = `translateX(0px)`
             slideable.style.width = "100%"
+
+            document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "none"
+            for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
+                const element = document.getElementsByClassName("Contact")[i];
+                
+                element.style.pointerEvents = "none"
+            }
+            
+            currentX = 0
         }
     });
 

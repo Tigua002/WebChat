@@ -23,6 +23,7 @@ html::-webkit-scrollbar {
     background-color: #131313;
     z-index: 10;
     overflow: hidden;
+
 }
 
 .navBar {
@@ -465,6 +466,7 @@ html::-webkit-scrollbar {
     overflow-y: scroll;
     height: 100vh;
     justify-content: end;
+    padding: 0%;
 }
 
 .messageHolder::-webkit-scrollbar {
@@ -547,6 +549,9 @@ html::-webkit-scrollbar {
     border: none;
     font-size: 4vw;
     margin: .5vw;
+}
+.closeArrow{
+    display: none;
 }
 
 .FileAttachment {
@@ -1039,6 +1044,7 @@ html::-webkit-scrollbar {
         margin: 0%;
         background-color: #131313;
         touch-action: none;
+        z-index: 10;
      }
      .TextMessage{
         height: 10vh;
@@ -1050,7 +1056,21 @@ html::-webkit-scrollbar {
      }
      #sendIcon{
         font-size: 10vw;
+
      }
+     .closeArrow, .Arrow{
+        color: white;
+        display: block;
+        height: 5vh;
+        margin: 0%;
+        padding: 0%;
+        width: 10vw;
+        position: absolute;
+        top: 1%;
+        left: 3%;
+        font-size: 8vw;
+        transition: .2s;
+    }
      .messageText{
         font-size: 3vw;
      }
