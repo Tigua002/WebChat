@@ -39,9 +39,9 @@ const sendMail = async (transporter, mailOptions) => {
 // test databasen
 const connection = mysql.createConnection({
     host: '127.0.0.1',
-    user: 'root',
-    password: 'admin',
-    database: 'webprot'
+    user: process.env.DBUser,
+    password: process.env.DBPass,
+    database: process.env.DB
 });
 
 // connecter til databasen
