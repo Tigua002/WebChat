@@ -298,11 +298,7 @@ async function loadMessages(lobbyID, lobbyName) {
             });
         })
         document.getElementsByClassName("messages")[0].appendChild(div);
-        if (messages[i].sender == "STATUS") {
-            message.style.color = "#b86363"
-            sender.style.fontSize = "1.7vw"
-            sender.style.margin = ".5vw"
-        }
+
     }
 
     // Refresh messages every second
@@ -346,15 +342,13 @@ async function loadMessages(lobbyID, lobbyName) {
             swiper()
             firstRun = false
             document.getElementsByClassName("closeArrow")[0].addEventListener("click", (e) => {
-                console.log("CLICKED");
                 slideable = document.getElementsByClassName("messageHolder")[0]
                 slideable.style.transition = ".1s ease-in"
                 if (ContClosed) {
                     ContClosed = false
                     slideable.style.transform = `translateX(${limit}px)`;
                     slideable.style.width = "70%"
-                    document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
-                    console.log("arrow Moved");
+                    document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
                     for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
                         const element = document.getElementsByClassName("Contact")[i];
                         
@@ -365,8 +359,7 @@ async function loadMessages(lobbyID, lobbyName) {
                 } else {
                     ContClosed = true
                     slideable.style.transition = ".1s ease-in"
-                    document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
-                    console.log("Arrow closed");
+                    document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(-1)"
                     document.getElementsByClassName("messageHolder")[0].style.transform = `translateX(0px)`
                     document.getElementsByClassName("messageHolder")[0].style.width = "100%" 
                     
@@ -379,7 +372,6 @@ async function loadMessages(lobbyID, lobbyName) {
 
         }
         document.getElementsByClassName("contactDiv")[0].style.pointerEvents = "none"
-        console.log("update");
         for (let i = 0; i < document.getElementsByClassName("Contact").length; i++) {
             const element = document.getElementsByClassName("Contact")[i];
             element.style.pointerEvents = "none"
@@ -744,7 +736,6 @@ if (window.innerWidth <= 600) {
 }
 function swiper() {
     slideable.addEventListener("touchstart", function (event) {
-        console.log("track");
         slideable.style.transition = "none"
         startX = event.touches[0].clientX;
         isDragging = true;
@@ -776,7 +767,6 @@ function swiper() {
             ContClosed = true
             if (slideWidth > 100) {
                 slideable.style.width = "100%"
-                console.log("flipepd");
                 ContClosed = true
                 document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
                 
@@ -800,7 +790,6 @@ function swiper() {
     slideable.addEventListener("touchend", function (event) {
         slideable.style.transition = "none"
         isDragging = false;
-        console.log(ContClosed);
         // Check if the movement is within 20% of the screen width
         if (!ContClosed) {
             document.getElementsByClassName("Arrow")[0].style.transform = "scaleX(1)"
