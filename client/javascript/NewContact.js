@@ -232,3 +232,4 @@ document.getElementById("discoverBtn").addEventListener("click", loadDiscoveries
 
 // Load contact requests when the page is loaded
 loadRequests();
+loadDiscoveries()

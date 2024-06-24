@@ -1116,8 +1116,58 @@ html::-webkit-scrollbar {
         padding: 0% 3%;
         overflow: hidden;
      }
-     .friendProfilePic, .friendPFPDiv{
+     .friendPFPDiv{
         width: 15vw;
         height: 15vw;
      }
+     .NCholder{
+        height: auto;
+        width: 100%;
+        align-items: center;
+        justify-content: left;
+        flex-direction: column;
+        padding-top: 15%;
+     }
+     .NCForm{
+        width: 90%;
+        margin: 0%;
+        min-height: 10%;
+        height: 10%;
+     }
+     .NCTitle{
+        font-size: 4vw;
+     }
+     #usernameInput{
+        font-size: 4vw;
+        margin-top: 3vw;
+     }
+     .submitBtn{
+        font-size: 4vw;
+        width: 50%;
+        height: 7vw;
+     }
+     .contactRequests{
+        margin-bottom: 5vh;
+     }
+     .requestTitle{
+        font-size: 5vw;
+     }
+     .requestUsername{
+        font-size: 5vw;
+     }
+     #discoverBtn{
+        font-size: 4vw;
+        width: 40%;
+        padding: 2vw;
+    }
+    .headerHolder{
+        align-items: center;
+    }
+    .discoverAdd{
+        font-size: 3vw;
+        padding: 2vw;
+    }
+    .discoverTitle{
+        font-size: 4vw;
+    }
 }
