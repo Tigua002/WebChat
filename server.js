@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer');
 require("dotenv").config()
 
 // Define the port to use
-const PORT = 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));
 
 // Define mail settings
