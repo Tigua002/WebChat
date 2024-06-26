@@ -999,6 +999,39 @@ html::-webkit-scrollbar {
         flex-direction: column;
         align-items: center;
     }
+    #customContextMenu{
+        z-index: 20;
+    }
+    .friendsMenu{
+        z-index: 20;
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        font-size: 3vw;
+    }
+    .friendsMenu::-webkit-scrollbar{
+        width: 20%;
+    }
+    .friend{
+        width: 90%;
+        overflow: hidden;
+    }
+    .customMenuItem{
+        font-size: 3vw;
+    }
+    .friendMenuName{
+        font-size: 3vw;
+    }
+    .custom-checkbox{
+        width: 3vw;
+        height: 3vw;
+    }
+    .submitAddGroup{
+        font-size: 3vw;
+        margin: 1vw;
+    }
     .navBar {
         flex-direction: row;
         justify-content: space-around;
@@ -1030,8 +1063,12 @@ html::-webkit-scrollbar {
         margin-bottom: 1vh;
         touch-action: none;
      }
+     .friendOption{
+        font-size: 4vw;
+     }
      .contactTitle{
         font-size: 2vw;
+        padding: 2vw;
      }
      .firstContact{
         margin: 0%;
@@ -1045,6 +1082,7 @@ html::-webkit-scrollbar {
         background-color: #131313;
         touch-action: none;
         z-index: 10;
+        max-height: 89vh;
      }
      .TextMessage{
         height: 10vh;

@@ -6,3 +6,4 @@ BLOCK USER
 REMOVE FRIEND
 NICKNAMES for friends
 Maybe utilise some form of discord's api
+Incorporate "socket.io"

@@ -84,11 +84,18 @@ async function loadContacts() {
         // Append contact div to the container
         let element = document.getElementsByClassName("contactDiv")[0];
         element.appendChild(div);
+        if (window.innerWidth <= 600) {
+            title.addEventListener("click", () => {
+                loadMessages(users[i].lobbyID, users[i].lobbyName);
+            });
 
+        } else {
+            div.addEventListener("click", () => {
+                loadMessages(users[i].lobbyID, users[i].lobbyName);
+            });
+            
+        }
         // Add event listener for the contact div
-        div.addEventListener("click", () => {
-            loadMessages(users[i].lobbyID, users[i].lobbyName);
-        });
 
         // Add event listener for the context menu
         div.addEventListener("contextmenu", (event) => {
