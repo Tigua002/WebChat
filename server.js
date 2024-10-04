@@ -12,7 +12,7 @@ require("dotenv").config()
 
 // Define the port to use
 const PORT = process.env.PORT;
-app.listen(9001, () => console.log(`Server is running on port: ${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));
 
 // Define mail settings
 var transporter = nodemailer.createTransport({
